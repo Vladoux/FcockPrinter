@@ -1,0 +1,11 @@
+C:\Leuko\fair-mark-desktop\fair-mark-desktop\bin\Release\fair-mark-desktop.exe.config
+C:\Leuko\fair-mark-desktop\fair-mark-desktop\bin\Release\fair-mark-desktop.exe
+C:\Leuko\fair-mark-desktop\fair-mark-desktop\bin\Release\fair-mark-desktop.pdb
+C:\Leuko\fair-mark-desktop\fair-mark-desktop\bin\Release\MaterialSkin.dll
+C:\Leuko\fair-mark-desktop\fair-mark-desktop\obj\Release\fair-mark-desktop.csproj.AssemblyReference.cache
+C:\Leuko\fair-mark-desktop\fair-mark-desktop\obj\Release\fair_mark_desktop.Form1.resources
+C:\Leuko\fair-mark-desktop\fair-mark-desktop\obj\Release\fair_mark_desktop.Properties.Resources.resources
+C:\Leuko\fair-mark-desktop\fair-mark-desktop\obj\Release\fair-mark-desktop.csproj.GenerateResource.cache
+C:\Leuko\fair-mark-desktop\fair-mark-desktop\obj\Release\fair-mark-desktop.csproj.CoreCompileInputs.cache
+C:\Leuko\fair-mark-desktop\fair-mark-desktop\obj\Release\fair-mark-desktop.exe
+C:\Leuko\fair-mark-desktop\fair-mark-desktop\obj\Release\fair-mark-desktop.pdb
