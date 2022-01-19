@@ -25,7 +25,6 @@ C:\Leuko\fair-mark-desktop\fair-mark-desktop\obj\Debug\fair-mark-desktop.csproj.
 C:\Leuko\fair-mark-desktop\fair-mark-desktop\obj\Debug\fair-mark-desktop.exe
 C:\Leuko\fair-mark-desktop\fair-mark-desktop\obj\Debug\fair-mark-desktop.pdb
 C:\Leuko\fair-mark-desktop\fair-mark-desktop\obj\Debug\fair-mark-desktop.csproj.AssemblyReference.cache
-C:\Leuko\fair-mark-desktop\fair-mark-desktop\obj\Debug\fair-mark-desktop.csproj.CopyComplete
 C:\Leuko\fair-mark-desktop\fair-mark-desktop\bin\Debug\Spire.License.dll
 C:\Leuko\fair-mark-desktop\fair-mark-desktop\bin\Debug\Spire.Pdf.dll
 C:\Leuko\fair-mark-desktop\fair-mark-desktop\bin\Debug\Microsoft.mshtml.dll
