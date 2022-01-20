@@ -15,14 +15,14 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_178D134E5A050CBE0513EA246895562F"
-        "OwnerKey" = "8:_32D710CEA25742CAA42A87EB027B390C"
+        "MsmKey" = "8:_0EF117FAE48F4EA8899EBF8A33B37F7D"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_178D134E5A050CBE0513EA246895562F"
-        "OwnerKey" = "8:_E8B27B01CB788C4CE445D32AEBBAE6E9"
+        "MsmKey" = "8:_19C35502C7624259AF8560CAEA1CD0B3"
+        "OwnerKey" = "8:_32D710CEA25742CAA42A87EB027B390C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -69,6 +69,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_7EB39564DBF343F8A2B287C1A191DFD4"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_84D9C9A4AC0D4215884F4B57D58FDA8D"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -81,14 +87,14 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_E8B27B01CB788C4CE445D32AEBBAE6E9"
-        "OwnerKey" = "8:_32D710CEA25742CAA42A87EB027B390C"
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_A59E5ECB4A3D1E483796A250D4AC2577"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_A59E5ECB4A3D1E483796A250D4AC2577"
+        "OwnerKey" = "8:_19C35502C7624259AF8560CAEA1CD0B3"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -125,18 +131,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_7B6F6F25B115F7E41D071A99BC7BBFCB"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E8B27B01CB788C4CE445D32AEBBAE6E9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_178D134E5A050CBE0513EA246895562F"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -202,20 +196,40 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_178D134E5A050CBE0513EA246895562F"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0EF117FAE48F4EA8899EBF8A33B37F7D"
+            {
+            "SourcePath" = "8:..\\fair-mark-desktop\\bin\\Debug\\x64\\pdfium.dll"
+            "TargetName" = "8:pdfium.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_3A677053B9A24A6D963C50FF5473697D"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_19C35502C7624259AF8560CAEA1CD0B3"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:PDFtoImage, Version=1.2.1.0, Culture=neutral, PublicKeyToken=77810836c31722d8, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:PdfiumViewer, Version=2.13.0.0, Culture=neutral, PublicKeyToken=91e4789cfb0609e0, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_178D134E5A050CBE0513EA246895562F"
+                    "_19C35502C7624259AF8560CAEA1CD0B3"
                     {
-                    "Name" = "8:PDFtoImage.dll"
+                    "Name" = "8:PdfiumViewer.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:PDFtoImage.dll"
+            "SourcePath" = "8:PdfiumViewer.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B1F6C50D3D0F4701981DAAC0FAC96CBC"
@@ -388,6 +402,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7EB39564DBF343F8A2B287C1A191DFD4"
+            {
+            "SourcePath" = "8:..\\fair-mark-desktop\\bin\\Debug\\x86\\pdfium.dll"
+            "TargetName" = "8:pdfium.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_B02904F1AD5E4C64B3907D1862074A9C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_84D9C9A4AC0D4215884F4B57D58FDA8D"
             {
             "SourcePath" = "8:..\\fair-mark-desktop\\Images\\favicon.ico"
@@ -439,37 +473,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E8B27B01CB788C4CE445D32AEBBAE6E9"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:PDFtoZPL, Version=2.2.1.0, Culture=neutral, PublicKeyToken=ca45441a1df7a5de, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_E8B27B01CB788C4CE445D32AEBBAE6E9"
-                    {
-                    "Name" = "8:PDFtoZPL.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:PDFtoZPL.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_B1F6C50D3D0F4701981DAAC0FAC96CBC"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
         }
         "FileType"
         {
@@ -497,6 +500,28 @@
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_3A677053B9A24A6D963C50FF5473697D"
+                    {
+                    "Name" = "8:x64"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_B173B99CE8114B1CA1D1E6C92A7486D3"
+                        "Folders"
+                        {
+                        }
+                    }
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_B02904F1AD5E4C64B3907D1862074A9C"
+                    {
+                    "Name" = "8:x86"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_B5D8374E7B72459BAB7707F51B4827C5"
+                        "Folders"
+                        {
+                        }
+                    }
                 }
             }
             "{1525181F-901A-416C-8A58-119130FE478E}:_FF7F69E2D4314A87B4012911AF6F1B1E"
@@ -536,20 +561,20 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:Setup"
-        "ProductCode" = "8:{F28AB845-8BA3-4066-8AA7-85B3720C59BD}"
-        "PackageCode" = "8:{7689CF43-0643-42CD-A5BD-BDEB3A684D20}"
+        "ProductName" = "8:Fcode"
+        "ProductCode" = "8:{BD7206CA-1E0F-4456-BC28-F3E3EF664FE4}"
+        "PackageCode" = "8:{3F65BEB6-12AC-452A-8A5C-FB47951CDA94}"
         "UpgradeCode" = "8:{8F5C6596-7932-4886-83CC-A5AE234D48E6}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.0"
-        "Manufacturer" = "8:Vladislav"
+        "ProductVersion" = "8:0.0.1"
+        "Manufacturer" = "8:Caspel LLC"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:Setup"
+        "Title" = "8:Fcode"
         "Subject" = "8:"
         "ARPCONTACT" = "8:Caspel LLC"
         "Keywords" = "8:"
@@ -674,7 +699,7 @@
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_94674471513F4561B1245F6B1FB4382A"
             {
-            "Name" = "8:from fair-mark-desktop"
+            "Name" = "8:Fcode"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"

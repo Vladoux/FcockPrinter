@@ -1,30 +1,22 @@
-﻿using fair_mark_desktop.Service;
-using MaterialSkin.Controls;
-using Microsoft.Win32;
-using Spire.Pdf;
+﻿using MaterialSkin.Controls;
+using PdfiumViewer;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Printing;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static fair_mark_desktop.Service.DesktopService;
 
 namespace fair_mark_desktop
 {
     public partial class Form1 : MaterialForm
     {
         readonly MaterialSkin.MaterialSkinManager materialSkinManager;
-        readonly DesktopService desktopService;
-        List<string> printStrings;
+        List<string> filePrint;
         string downloadUrl;
         string ext;
         bool fileDownloaded = false;
@@ -36,18 +28,11 @@ namespace fair_mark_desktop
             materialSkinManager.EnforceBackcolorOnAllComponents = true;
             materialSkinManager.ColorScheme = new MaterialSkin.ColorScheme(MaterialSkin.Primary.LightBlue800, MaterialSkin.Primary.LightBlue900, MaterialSkin.Primary.Blue900,
                 MaterialSkin.Accent.Indigo700, MaterialSkin.TextShade.WHITE);
-            desktopService = new DesktopService();
-            printStrings = new List<string>();
-            var printers = desktopService.GetPrinterList();
+            filePrint = new List<string>();
             notifyIcon1.Visible = false;
             this.notifyIcon1.MouseDoubleClick += new MouseEventHandler(notifyIcon1_MouseDoubleClick);
             this.Resize += new System.EventHandler(this.Form1_Resize);
-            BindingSource comboBoxBindingSource = new BindingSource();
 
-            comboBoxBindingSource.DataSource = printers;
-
-            materialComboBox1.DataSource = comboBoxBindingSource;
-            materialComboBox1.DisplayMember = "Name";
         }
 
 
@@ -59,7 +44,9 @@ namespace fair_mark_desktop
                 WebClient client = new WebClient();
                 client.DownloadProgressChanged += wc_DownloadProgressChanged;
                 client.DownloadFileTaskAsync(new Uri($"{url}"),
-                        Path.Combine(desktopService.GetPath(), $"test.{ext}")).ContinueWith(x => ExctractZip());
+                        Path.Combine(Path.GetTempPath(), $"test.{ext}")).ContinueWith(x => ExctractZip());
+                materialLabel1.Text = url.Substring(url.LastIndexOf('/')+1);
+                materialButton3.Enabled = true;
                 return true;
             }
             catch (Exception e)
@@ -75,23 +62,23 @@ namespace fair_mark_desktop
             materialProgressBar1.Value = e.ProgressPercentage;
         }
 
-        void wc_DownloadProgressCompleted(object sender, DownloadDataCompletedEventArgs e)
-        {
-            ExctractZip();
-        }
+        //void wc_DownloadProgressCompleted(object sender, DownloadDataCompletedEventArgs e)
+        //{
+        //    ExctractZip();
+        //}
 
         public void ExctractZip()
         {
-            var path = Path.Combine(desktopService.GetPath(), $"{DateTime.Now:dd-MM-yyyy-HH-mm-ss}");
+            var path = Path.Combine(Path.GetTempPath(), $"{DateTime.Now:dd-MM-yyyy-HH-mm-ss}");
             if (ext == "zip")
             {
                 Directory.CreateDirectory(path);
-                ZipFile.ExtractToDirectory(Path.Combine(desktopService.GetPath(), $"test.{ext}"), path);
+                ZipFile.ExtractToDirectory(Path.Combine(Path.GetTempPath(), $"test.{ext}"), path);
             }
             var dictinary = new DirectoryInfo(path);
             FileInfo[] files = dictinary.GetFiles("*.pdf");
 
-            printStrings.AddRange(files.Select(x=>x.FullName));
+            filePrint.AddRange(files.Select(x => x.FullName));
 
         }
 
@@ -140,25 +127,30 @@ namespace fair_mark_desktop
             }
         }
 
+        private void ShowDialogPrinter(List<string> files)
+        {
+            if (materialSwitch1.Checked == true)
+            {
+                SendToPrinter(files);
+            }
+            else
+            {
+                var pd = new PrintDialog();
+                if (pd.ShowDialog() == DialogResult.OK)
+                {
+                    SendToPrinter(files);
+                }
+            }
+        }
+
         private void SendToPrinter(List<string> files)
         {
             foreach (var file in files)
             {
-                PdfDocument doc = new PdfDocument();
-                doc.LoadFromFile(file);
-
-                // Specify a printer
-                doc.PrintSettings.PrinterName = ((MyPrinter)(materialComboBox1.SelectedItem)).Name;
-
-                // Print PDF documents
-                doc.Print();
-
+                var document = PdfDocument.Load(file);
+                var printDocument = document.CreatePrintDocument();
+                printDocument.Print();
             }
-        }
-
-        private void materialComboBox1_SelectedValueChanged(object sender, EventArgs e)
-        {
-            materialLabel2.Text = ((MyPrinter)((MaterialComboBox)sender).SelectedItem).Status;
         }
 
 
@@ -175,8 +167,8 @@ namespace fair_mark_desktop
 
         private void Form1_Activated(object sender, EventArgs e)
         {
-           
-            var url = File.ReadAllText(Path.Combine(desktopService.GetPath(), "url.txt"));
+
+            var url = File.ReadAllText(Path.Combine(Path.GetTempPath(), "url.txt"));
             if (downloadUrl != url)
             {
                 downloadUrl = url;
@@ -194,7 +186,7 @@ namespace fair_mark_desktop
 
         private void materialButton3_Click(object sender, EventArgs e)
         {
-            SendToPrinter(printStrings);
+            ShowDialogPrinter(filePrint);
         }
     }
 }

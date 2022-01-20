@@ -8,7 +8,6 @@ using System.Threading;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.IO;
-using fair_mark_desktop.Service;
 
 namespace fair_mark_desktop
 {
@@ -27,8 +26,7 @@ namespace fair_mark_desktop
         static void Main(string[] args)
         {
             
-            var service = new DesktopService();
-            File.WriteAllText(Path.Combine(service.GetPath(), $"url.txt"), args.FirstOrDefault());
+            File.WriteAllText(Path.Combine(Path.GetTempPath(), $"url.txt"), args.FirstOrDefault());
 
             var KeyTest = Registry.ClassesRoot;
 
