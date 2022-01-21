@@ -15,8 +15,9 @@ namespace fair_mark_desktop
     static class Program
     {
         [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool SetForegroundWindow(IntPtr hWnd);
+        static extern IntPtr SetForegroundWindow(IntPtr hWnd);
+        [DllImport("user32.dll")]
+        static extern IntPtr ShowWindow(IntPtr hWnd, int nCmdShow);
 
         public static Form1 MainForm = null;
         /// <summary>
@@ -37,7 +38,16 @@ namespace fair_mark_desktop
                 key.CreateSubKey(@"shell\open\command").SetValue("", $"\"{Application.ExecutablePath}\" %1");
             }
 
+            RegistryKey reg;
+            reg = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run\\");
+            if (reg.GetValue("Fcode") == null)
+            {
+                reg.SetValue("Fcode", Application.ExecutablePath);
+                reg.Close();
+            }
+
             bool createdNew = true;
+
             using (Mutex mutex = new Mutex(true, "fair-mark-desktop", out createdNew))
             {
                 if (createdNew)
@@ -50,14 +60,31 @@ namespace fair_mark_desktop
                 }
                 else
                 {
-                    Process current = Process.GetCurrentProcess();
-                    foreach (Process process in Process.GetProcessesByName(current.ProcessName))
+                    //Process current = Process.GetCurrentProcess();
+                    //foreach (Process process in Process.GetProcessesByName(current.ProcessName))
+                    //{
+                    //    if (process.Id != current.Id)
+                    //    {
+
+                    //        SetForegroundWindow(process.MainWindowHandle);
+
+                    //        break;
+                    //    }
+                    //}
+                    
+
+                    // At start-up - Get the number of instances of this app
+                    Process[] procs = Process.GetProcessesByName(Application.ProductName);
+                    if (procs.Length > 1)
                     {
-                        if (process.Id != current.Id)
-                        {
-                            SetForegroundWindow(process.MainWindowHandle);
-                            break;
-                        }
+                        // the previously running instance will be at either index 0 or 1
+                        int index;
+                        if ((int)procs[0].MainWindowHandle != 0) index = 0;
+                        else index = 1;
+                        SetForegroundWindow(procs[index].MainWindowHandle);
+                        // 9 = SW_RESTORE (winuser.h)
+                        ShowWindow(procs[index].MainWindowHandle, 9);
+                        return; // exit, terminate this instance
                     }
                 }
             }

@@ -173,6 +173,20 @@
     {
         "CustomAction"
         {
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_240F762246024047A5486326741A632F"
+            {
+            "Name" = "8:Primary output from fair-mark-desktop (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_32D710CEA25742CAA42A87EB027B390C"
+            "FileType" = "3:2"
+            "InstallAction" = "3:1"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_8EC31097_0789_472A_8C97_32B71A37987B"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
         }
         "DefaultFeature"
         {
@@ -563,7 +577,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Fcode"
         "ProductCode" = "8:{BD7206CA-1E0F-4456-BC28-F3E3EF664FE4}"
-        "PackageCode" = "8:{3F65BEB6-12AC-452A-8A5C-FB47951CDA94}"
+        "PackageCode" = "8:{3429838F-573F-40F1-A205-FB6E98549127}"
         "UpgradeCode" = "8:{8F5C6596-7932-4886-83CC-A5AE234D48E6}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -663,6 +677,94 @@
             {
                 "Keys"
                 {
+                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_A619B26E792243378B27B84FBB68F8B1"
+                    {
+                    "Name" = "8:Fcode"
+                    "Condition" = "8:"
+                    "AlwaysCreate" = "11:FALSE"
+                    "DeleteAtUninstall" = "11:FALSE"
+                    "Transitive" = "11:FALSE"
+                        "Keys"
+                        {
+                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_742F5D7C4778498E970C87459AD7F802"
+                            {
+                            "Name" = "8:shell"
+                            "Condition" = "8:"
+                            "AlwaysCreate" = "11:FALSE"
+                            "DeleteAtUninstall" = "11:FALSE"
+                            "Transitive" = "11:FALSE"
+                                "Keys"
+                                {
+                                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_8EA2174BA7A443BFB92CEA7CCE0CB744"
+                                    {
+                                    "Name" = "8:open"
+                                    "Condition" = "8:"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "DeleteAtUninstall" = "11:FALSE"
+                                    "Transitive" = "11:FALSE"
+                                        "Keys"
+                                        {
+                                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_71E50E0812044896B1D97904AA756052"
+                                            {
+                                            "Name" = "8:command"
+                                            "Condition" = "8:"
+                                            "AlwaysCreate" = "11:FALSE"
+                                            "DeleteAtUninstall" = "11:FALSE"
+                                            "Transitive" = "11:FALSE"
+                                                "Keys"
+                                                {
+                                                }
+                                                "Values"
+                                                {
+                                                    "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_AB7C9F7905AA4E7F8044B0C8954336F4"
+                                                    {
+                                                    "Name" = "8:(Default)"
+                                                    "Condition" = "8:"
+                                                    "Transitive" = "11:FALSE"
+                                                    "ValueTypes" = "3:1"
+                                                    "Value" = "8:$\"\\\"{Application.ExecutablePath}\\\" %1\""
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        "Values"
+                                        {
+                                            "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_A327FC6076894A998F3C62CF761D918F"
+                                            {
+                                            "Name" = "8:(Default)"
+                                            "Condition" = "8:"
+                                            "Transitive" = "11:FALSE"
+                                            "ValueTypes" = "3:1"
+                                            "Value" = "8:"
+                                            }
+                                        }
+                                    }
+                                }
+                                "Values"
+                                {
+                                    "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_5AEA5E30C503462DBFD6900B3AB8E890"
+                                    {
+                                    "Name" = "8:(Default)"
+                                    "Condition" = "8:"
+                                    "Transitive" = "11:FALSE"
+                                    "ValueTypes" = "3:1"
+                                    "Value" = "8:"
+                                    }
+                                }
+                            }
+                        }
+                        "Values"
+                        {
+                            "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_E7C68B475B2145B3AB26AF7381A08C4F"
+                            {
+                            "Name" = "8:New Value #1"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "ValueTypes" = "3:1"
+                            "Value" = "8:"
+                            }
+                        }
+                    }
                 }
             }
             "HKU"

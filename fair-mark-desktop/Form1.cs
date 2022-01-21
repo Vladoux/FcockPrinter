@@ -10,6 +10,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Windows.Forms;
+using static MaterialSkin.Controls.MaterialCheckedListBox;
 
 namespace fair_mark_desktop
 {
@@ -19,10 +20,23 @@ namespace fair_mark_desktop
         List<string> filePrint;
         string downloadUrl;
         string ext;
+        string path;
         bool fileDownloaded = false;
+        bool isHiden;
         public Form1(string[] args)
         {
             InitializeComponent();
+
+            path = $"{Path.GetTempPath()}/Fcode";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            if (!File.Exists($"{path}/IsHiden.txt"))
+            {
+                File.WriteAllText($"{path}/IsHiden.txt", "False");
+            }
+            isHiden = File.ReadAllText($"{path}/IsHiden.txt") == "True" ? true : false;
 
             materialSkinManager = MaterialSkin.MaterialSkinManager.Instance;
             materialSkinManager.EnforceBackcolorOnAllComponents = true;
@@ -30,8 +44,14 @@ namespace fair_mark_desktop
                 MaterialSkin.Accent.Indigo700, MaterialSkin.TextShade.WHITE);
             filePrint = new List<string>();
             notifyIcon1.Visible = false;
+
+            materialSwitch2.Checked = isHiden;
             this.notifyIcon1.MouseDoubleClick += new MouseEventHandler(notifyIcon1_MouseDoubleClick);
             this.Resize += new System.EventHandler(this.Form1_Resize);
+            //if (isHiden)
+            //{
+            //    OnClosing(new CancelEventArgs());
+            //}
 
         }
 
@@ -44,9 +64,8 @@ namespace fair_mark_desktop
                 WebClient client = new WebClient();
                 client.DownloadProgressChanged += wc_DownloadProgressChanged;
                 client.DownloadFileTaskAsync(new Uri($"{url}"),
-                        Path.Combine(Path.GetTempPath(), $"test.{ext}")).ContinueWith(x => ExctractZip());
-                materialLabel1.Text = url.Substring(url.LastIndexOf('/')+1);
-                materialButton3.Enabled = true;
+                        Path.Combine(path, $"test.{ext}")).ContinueWith(x => ExctractZip());
+
                 return true;
             }
             catch (Exception e)
@@ -62,24 +81,41 @@ namespace fair_mark_desktop
             materialProgressBar1.Value = e.ProgressPercentage;
         }
 
-        //void wc_DownloadProgressCompleted(object sender, DownloadDataCompletedEventArgs e)
-        //{
-        //    ExctractZip();
-        //}
 
         public void ExctractZip()
         {
-            var path = Path.Combine(Path.GetTempPath(), $"{DateTime.Now:dd-MM-yyyy-HH-mm-ss}");
+            var pathExtract = Path.Combine(path, $"{DateTime.Now:dd-MM-yyyy-HH-mm-ss}");
             if (ext == "zip")
             {
-                Directory.CreateDirectory(path);
-                ZipFile.ExtractToDirectory(Path.Combine(Path.GetTempPath(), $"test.{ext}"), path);
+                Directory.CreateDirectory(pathExtract);
+                ZipFile.ExtractToDirectory(Path.Combine(path, $"test.{ext}"), pathExtract);
             }
-            var dictinary = new DirectoryInfo(path);
+            var dictinary = new DirectoryInfo(pathExtract);
             FileInfo[] files = dictinary.GetFiles("*.pdf");
 
             filePrint.AddRange(files.Select(x => x.FullName));
 
+            materialCheckedListBox1.Invoke((MethodInvoker)(() =>
+            {
+                filePrint.ForEach(x =>
+                {
+                    var item = new MaterialCheckbox()
+                    {
+                        Text = x,
+                        Checked = false,
+                    };
+                    item.CheckedChanged += (sender, e) =>
+                    {
+                        materialButton3.Enabled = materialCheckedListBox1.Items.Any(z => z.Checked) ? true : false;
+                    };
+                    materialCheckedListBox1.Items.Add(item);
+                });
+                
+            }));
+            if (isHiden)
+            {
+                SendToPrinter(filePrint);
+            }
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -167,7 +203,6 @@ namespace fair_mark_desktop
 
         private void Form1_Activated(object sender, EventArgs e)
         {
-
             var url = File.ReadAllText(Path.Combine(Path.GetTempPath(), "url.txt"));
             if (downloadUrl != url)
             {
@@ -186,7 +221,28 @@ namespace fair_mark_desktop
 
         private void materialButton3_Click(object sender, EventArgs e)
         {
-            ShowDialogPrinter(filePrint);
+            var files = new List<string>();
+            materialCheckedListBox1.Items.ForEach(x =>
+            {
+                if (x.Checked)
+                    files.Add(x.Text);
+            });
+
+            ShowDialogPrinter(files);
+        }
+
+        private void materialSwitch2_CheckedChanged(object sender, EventArgs e)
+        {
+            isHiden = ((MaterialSwitch)sender).CheckState == CheckState.Checked ? isHiden = true : false;
+            File.WriteAllText($"{path}/IsHiden.txt", $"{isHiden}");
+        }
+
+        private void materialSwitch3_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (materialSwitch3.Checked)
+            {
+                materialCheckedListBox1.Items.ForEach(x => x.Checked = true);
+            }
         }
     }
 }
