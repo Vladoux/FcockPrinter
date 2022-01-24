@@ -1,58 +1,60 @@
-﻿using MaterialSkin.Controls;
+﻿using fair_mark_desktop.Extensions;
+using MaterialSkin;
+using MaterialSkin.Controls;
 using PdfiumViewer;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
+using System.Security.Permissions;
+using System.Threading;
 using System.Windows.Forms;
-using static MaterialSkin.Controls.MaterialCheckedListBox;
 
 namespace fair_mark_desktop
 {
     public partial class Form1 : MaterialForm
     {
-        readonly MaterialSkin.MaterialSkinManager materialSkinManager;
-        List<string> filePrint;
-        string downloadUrl;
-        string ext;
-        string path;
-        bool fileDownloaded = false;
-        bool isHiden;
-        public Form1(string[] args)
+        private MaterialSkinManager materialSkinManager;
+        private readonly List<string> filePrint;
+        private string downloadUrl;
+        private string ext;
+        private bool fileDownloaded = false;
+        private bool isHiden;
+        private readonly static string path = $"{Path.GetTempPath()}\\Fcode";
+        private readonly static string urlFilePath = $"{path}\\url.txt";
+        private readonly static string hiddenFilePath = $"{path}/IsHiden.txt";
+        private List<string> fullFilePaths = new List<string>();
+        public Form1()
         {
             InitializeComponent();
+            InitMatetialColor();
 
-            path = $"{Path.GetTempPath()}/Fcode";
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            if (!File.Exists($"{path}/IsHiden.txt"))
-            {
-                File.WriteAllText($"{path}/IsHiden.txt", "False");
-            }
-            isHiden = File.ReadAllText($"{path}/IsHiden.txt") == "True" ? true : false;
+            Watcher();
 
-            materialSkinManager = MaterialSkin.MaterialSkinManager.Instance;
-            materialSkinManager.EnforceBackcolorOnAllComponents = true;
-            materialSkinManager.ColorScheme = new MaterialSkin.ColorScheme(MaterialSkin.Primary.LightBlue800, MaterialSkin.Primary.LightBlue900, MaterialSkin.Primary.Blue900,
-                MaterialSkin.Accent.Indigo700, MaterialSkin.TextShade.WHITE);
+            hiddenFilePath.FirstCreateFile("False");
+            isHiden = File.ReadAllText(hiddenFilePath) == "True";
+
+
             filePrint = new List<string>();
             notifyIcon1.Visible = false;
+            autoPrintSwitch.Checked = isHiden;
+            notifyIcon1.MouseDoubleClick += new MouseEventHandler(notifyIcon1_MouseDoubleClick);
+            Resize += new EventHandler(Form1_Resize);
+        }
 
-            materialSwitch2.Checked = isHiden;
-            this.notifyIcon1.MouseDoubleClick += new MouseEventHandler(notifyIcon1_MouseDoubleClick);
-            this.Resize += new System.EventHandler(this.Form1_Resize);
-            //if (isHiden)
-            //{
-            //    OnClosing(new CancelEventArgs());
-            //}
+        private void InitMatetialColor()
+        {
+            materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.EnforceBackcolorOnAllComponents = true;
 
+            materialSkinManager.ColorScheme = new ColorScheme(Color.FromArgb(10, 68, 99), 
+                Color.FromArgb(10, 68, 99), Color.FromArgb(10, 68, 99),
+                Color.FromArgb(10, 68, 99), TextShade.WHITE);
         }
 
 
@@ -78,7 +80,7 @@ namespace fair_mark_desktop
 
         void wc_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            materialProgressBar1.Value = e.ProgressPercentage;
+            materialProgressBar1.Invoke((MethodInvoker)(() => materialProgressBar1.Value = e.ProgressPercentage));
         }
 
 
@@ -99,51 +101,45 @@ namespace fair_mark_desktop
             {
                 filePrint.ForEach(x =>
                 {
+                    fullFilePaths.Add(x);
                     var item = new MaterialCheckbox()
                     {
-                        Text = x,
+                        Text = x.GetFileNameFromPath(),
                         Checked = false,
                     };
                     item.CheckedChanged += (sender, e) =>
                     {
-                        materialButton3.Enabled = materialCheckedListBox1.Items.Any(z => z.Checked) ? true : false;
+                        materialButton3.Enabled = materialCheckedListBox1.Items.Any(z => z.Checked);
                     };
                     materialCheckedListBox1.Items.Add(item);
                 });
-                
             }));
+
             if (isHiden)
             {
-                SendToPrinter(filePrint);
+                MessageBox.Show("Send to printer");
+                //SendToPrinter(filePrint);
             }
         }
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            // проверяем наше окно, и если оно было свернуто, делаем событие        
             if (WindowState == FormWindowState.Minimized)
             {
-                // прячем наше окно из панели
-                this.ShowInTaskbar = false;
-                // делаем нашу иконку в трее активной
+                ShowInTaskbar = false;
                 notifyIcon1.Visible = true;
             }
         }
 
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            // делаем нашу иконку скрытой
-            notifyIcon1.Visible = false;
-            // возвращаем отображение окна в панели
-            this.ShowInTaskbar = true;
-            //разворачиваем окно
-            WindowState = FormWindowState.Normal;
+            OpenForm();
         }
 
         protected override void OnClosing(CancelEventArgs e)
         {
             e.Cancel = true;
-            this.WindowState = FormWindowState.Minimized;
+            WindowState = FormWindowState.Minimized;
         }
 
         private void contextMenuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -151,11 +147,7 @@ namespace fair_mark_desktop
             switch (e.ClickedItem.Name)
             {
                 case "openMenuItem":
-                    notifyIcon1.Visible = false;
-                    // возвращаем отображение окна в панели
-                    this.ShowInTaskbar = true;
-                    //разворачиваем окно
-                    WindowState = FormWindowState.Normal;
+                    OpenForm();
                     break;
                 case "closeMenuItem":
                     Application.Exit();
@@ -163,9 +155,16 @@ namespace fair_mark_desktop
             }
         }
 
+        private void OpenForm()
+        {
+            notifyIcon1.Visible = false;
+            ShowInTaskbar = true;
+            WindowState = FormWindowState.Normal;
+        }
+
         private void ShowDialogPrinter(List<string> files)
         {
-            if (materialSwitch1.Checked == true)
+            if (defaultPrinterSwitch.Checked == true)
             {
                 SendToPrinter(files);
             }
@@ -189,21 +188,22 @@ namespace fair_mark_desktop
             }
         }
 
-
-        private void gggToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
         private void materialButton1_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
-
-        private void Form1_Activated(object sender, EventArgs e)
+        private void OnUrlFileChanged(object sender, FileSystemEventArgs e)
         {
-            var url = File.ReadAllText(Path.Combine(Path.GetTempPath(), "url.txt"));
+            if (e.FullPath != urlFilePath) return;
+
+            if (!autoPrintSwitch.Checked)
+            {
+                Invoke((MethodInvoker)OpenForm);
+            }
+
+            Thread.Sleep(1000);
+            var url = File.ReadAllText(urlFilePath);
             if (downloadUrl != url)
             {
                 downloadUrl = url;
@@ -221,28 +221,41 @@ namespace fair_mark_desktop
 
         private void materialButton3_Click(object sender, EventArgs e)
         {
-            var files = new List<string>();
+            var toPrintFiles = new List<string>();
             materialCheckedListBox1.Items.ForEach(x =>
             {
                 if (x.Checked)
-                    files.Add(x.Text);
+                    toPrintFiles.Add(fullFilePaths.FirstOrDefault(full => full.Contains(x.Text)));
             });
 
-            ShowDialogPrinter(files);
+            ShowDialogPrinter(toPrintFiles);
         }
 
         private void materialSwitch2_CheckedChanged(object sender, EventArgs e)
         {
-            isHiden = ((MaterialSwitch)sender).CheckState == CheckState.Checked ? isHiden = true : false;
-            File.WriteAllText($"{path}/IsHiden.txt", $"{isHiden}");
+            isHiden = ((MaterialSwitch)sender).CheckState == CheckState.Checked && (isHiden = true);
+            File.WriteAllText(hiddenFilePath, isHiden.ToString());
         }
 
         private void materialSwitch3_CheckStateChanged(object sender, EventArgs e)
         {
-            if (materialSwitch3.Checked)
+            materialCheckedListBox1.Items.ForEach(x => x.Checked = selectAllSwitch.Checked);
+        }
+
+        static FileSystemWatcher watcher = null;
+        [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
+        public void Watcher()
+        {
+            watcher = new FileSystemWatcher()
             {
-                materialCheckedListBox1.Items.ForEach(x => x.Checked = true);
-            }
+                Path = $"{Path.GetTempPath()}\\Fcode",
+                NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.LastAccess
+                    | NotifyFilters.FileName | NotifyFilters.DirectoryName | NotifyFilters.Size,
+                Filter = "*.*",
+                EnableRaisingEvents = true
+            };
+
+            watcher.Changed += OnUrlFileChanged;
         }
     }
 }
