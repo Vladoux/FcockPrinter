@@ -354,3 +354,5 @@ fair-mark-desktop/obj/
 fair-mark-desktop/bin/
 
 Setup/Debug/
+
+.idea/
