@@ -117,8 +117,7 @@ namespace fair_mark_desktop
 
             if (isHiden)
             {
-                MessageBox.Show("Send to printer");
-                //SendToPrinter(filePrint);
+                SendToPrinter(filePrint);
             }
         }
 
