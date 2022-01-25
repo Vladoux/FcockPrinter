@@ -43,6 +43,7 @@ namespace fair_mark_desktop
             this.materialCheckbox1 = new MaterialSkin.Controls.MaterialCheckbox();
             this.autoPrintSwitch = new MaterialSkin.Controls.MaterialSwitch();
             this.selectAllSwitch = new MaterialSkin.Controls.MaterialSwitch();
+            this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -77,6 +78,7 @@ namespace fair_mark_desktop
             // 
             // materialButton1
             // 
+            this.materialButton1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.materialButton1.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             this.materialButton1.Depth = 0;
             this.materialButton1.HighEmphasis = true;
@@ -108,6 +110,7 @@ namespace fair_mark_desktop
             // 
             // materialButton3
             // 
+            this.materialButton3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.materialButton3.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             this.materialButton3.Depth = 0;
             this.materialButton3.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -204,12 +207,30 @@ namespace fair_mark_desktop
             this.selectAllSwitch.UseVisualStyleBackColor = true;
             this.selectAllSwitch.CheckStateChanged += new System.EventHandler(this.materialSwitch3_CheckStateChanged);
             // 
+            // materialLabel1
+            // 
+            this.materialLabel1.AutoSize = true;
+            this.materialLabel1.Depth = 0;
+            this.materialLabel1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.materialLabel1.Font = new System.Drawing.Font("Roboto Medium", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel1.FontType = MaterialSkin.MaterialSkinManager.fontType.Subtitle2;
+            this.materialLabel1.ForeColor = System.Drawing.Color.Lime;
+            this.materialLabel1.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.materialLabel1.Location = new System.Drawing.Point(338, 64);
+            this.materialLabel1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel1.Name = "materialLabel1";
+            this.materialLabel1.Size = new System.Drawing.Size(193, 17);
+            this.materialLabel1.TabIndex = 13;
+            this.materialLabel1.Text = "Доступна новая версия 1.0.4";
+            this.materialLabel1.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(534, 479);
+            this.Controls.Add(this.materialLabel1);
             this.Controls.Add(this.selectAllSwitch);
             this.Controls.Add(this.autoPrintSwitch);
             this.Controls.Add(this.materialCheckedListBox1);
@@ -242,6 +263,7 @@ namespace fair_mark_desktop
         private MaterialSkin.Controls.MaterialCheckbox materialCheckbox1;
         private MaterialSkin.Controls.MaterialSwitch autoPrintSwitch;
         private MaterialSkin.Controls.MaterialSwitch selectAllSwitch;
+        private MaterialSkin.Controls.MaterialLabel materialLabel1;
     }
 }
 

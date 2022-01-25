@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31729.503
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fair-mark-desktop", "fair-mark-desktop\fair-mark-desktop.csproj", "{CE4C0A35-4475-4F65-BE4C-AC5E38A9398B}"
-EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{05B71E38-3DCB-4B79-A25D-62B30544FD8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +21,6 @@ Global
 		{CE4C0A35-4475-4F65-BE4C-AC5E38A9398B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CE4C0A35-4475-4F65-BE4C-AC5E38A9398B}.Release|x86.ActiveCfg = Release|Any CPU
 		{CE4C0A35-4475-4F65-BE4C-AC5E38A9398B}.Release|x86.Build.0 = Release|Any CPU
-		{05B71E38-3DCB-4B79-A25D-62B30544FD8F}.Debug|Any CPU.ActiveCfg = Debug
-		{05B71E38-3DCB-4B79-A25D-62B30544FD8F}.Debug|x86.ActiveCfg = Debug
-		{05B71E38-3DCB-4B79-A25D-62B30544FD8F}.Release|Any CPU.ActiveCfg = Release
-		{05B71E38-3DCB-4B79-A25D-62B30544FD8F}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

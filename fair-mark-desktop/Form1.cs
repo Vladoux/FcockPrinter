@@ -1,4 +1,5 @@
 ﻿using fair_mark_desktop.Extensions;
+using fair_mark_desktop.Service;
 using MaterialSkin;
 using MaterialSkin.Controls;
 using PdfiumViewer;
@@ -6,13 +7,16 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Security.Permissions;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace fair_mark_desktop
@@ -33,12 +37,13 @@ namespace fair_mark_desktop
         {
             InitializeComponent();
             InitMatetialColor();
+            Text = $"FairCode {Application.ProductVersion}";
 
+            WorkSchedulerService.IntervalInHours(1, async () => await CheckVersion());
             Watcher();
 
             hiddenFilePath.FirstCreateFile("False");
             isHiden = File.ReadAllText(hiddenFilePath) == "True";
-
 
             filePrint = new List<string>();
             notifyIcon1.Visible = false;
@@ -52,7 +57,7 @@ namespace fair_mark_desktop
             materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.EnforceBackcolorOnAllComponents = true;
 
-            materialSkinManager.ColorScheme = new ColorScheme(Color.FromArgb(10, 68, 99), 
+            materialSkinManager.ColorScheme = new ColorScheme(Color.FromArgb(10, 68, 99),
                 Color.FromArgb(10, 68, 99), Color.FromArgb(10, 68, 99),
                 Color.FromArgb(10, 68, 99), TextShade.WHITE);
         }
@@ -255,6 +260,29 @@ namespace fair_mark_desktop
             };
 
             watcher.Changed += OnUrlFileChanged;
+        }
+
+        public async Task CheckVersion()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            string version = $"{fvi.FileMajorPart}.{fvi.FileMinorPart}.{fvi.FileBuildPart}";
+
+            var fmarkService = new FMarkApiService();
+            var result = await fmarkService.CheckNewVersion();
+            if (result.IsSuccess && !Equals(version, result.Value))
+            {
+                materialLabel1.Invoke((MethodInvoker)(() =>
+                {
+                    materialLabel1.Text = $"Доступна новая версия - {result.Value}";
+                    materialLabel1.Visible = true;
+                }));
+            }
+            else
+                materialLabel1.Invoke((MethodInvoker)(() =>
+                {
+                    materialLabel1.Visible = false;
+                }));
         }
     }
 }

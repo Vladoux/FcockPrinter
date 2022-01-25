@@ -29,8 +29,6 @@ namespace fair_mark_desktop
         {
             Path.Combine(Path.GetTempPath(), $"FCode\\url.txt").WriteToFile(args.FirstOrDefault());
 
-            CheckRegistry();
-
             using (Mutex mutex = new Mutex(true, "fair-mark-desktop", out var createdNew))
             {
                 if (createdNew)
@@ -53,20 +51,6 @@ namespace fair_mark_desktop
                     }
                 }
             }
-        }
-
-        private const string RegistryFolderValue = "FCode";
-        
-        private static void CheckRegistry()
-        {
-            //var keyTest = Registry.ClassesRoot;
-
-            //if (!keyTest.GetSubKeyNames().Contains(RegistryFolderValue))
-            //{
-            //    RegistryKey key = keyTest.CreateSubKey(RegistryFolderValue);
-            //    key.SetValue("URL Protocol", $"{RegistryFolderValue} Protocol");
-            //    key.CreateSubKey(@"shell\open\command").SetValue("", $"\"{Application.ExecutablePath}\" %1");
-            //}
         }
     }
 }
