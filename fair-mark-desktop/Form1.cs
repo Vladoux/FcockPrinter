@@ -25,7 +25,7 @@ namespace fair_mark_desktop
         private string ext;
         private bool fileDownloaded = false;
         private bool isHiden;
-        private readonly static string path = $"{Path.GetTempPath()}\\Fcode";
+        private readonly static string path = $"{Path.GetTempPath()}\\FCode";
         private readonly static string urlFilePath = $"{path}\\url.txt";
         private readonly static string hiddenFilePath = $"{path}/IsHiden.txt";
         private List<string> fullFilePaths = new List<string>();
@@ -247,7 +247,7 @@ namespace fair_mark_desktop
         {
             watcher = new FileSystemWatcher()
             {
-                Path = $"{Path.GetTempPath()}\\Fcode",
+                Path = $"{Path.GetTempPath()}\\FCode",
                 NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.LastAccess
                     | NotifyFilters.FileName | NotifyFilters.DirectoryName | NotifyFilters.Size,
                 Filter = "*.*",

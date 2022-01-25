@@ -54,23 +54,18 @@ namespace fair_mark_desktop
                 }
             }
         }
+
+        private const string RegistryFolderValue = "FCode";
         
         private static void CheckRegistry()
         {
             var keyTest = Registry.ClassesRoot;
 
-            if (!keyTest.GetSubKeyNames().Contains("FCode"))
+            if (!keyTest.GetSubKeyNames().Contains(RegistryFolderValue))
             {
-                RegistryKey key = keyTest.CreateSubKey("FCode");
-                key.SetValue("URL Protocol", "FCode Protocol");
+                RegistryKey key = keyTest.CreateSubKey(RegistryFolderValue);
+                key.SetValue("URL Protocol", $"{RegistryFolderValue} Protocol");
                 key.CreateSubKey(@"shell\open\command").SetValue("", $"\"{Application.ExecutablePath}\" %1");
-            }
-
-            var reg = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run\\");
-            if (reg.GetValue("Fcode") == null)
-            {
-                reg.SetValue("Fcode", Application.ExecutablePath);
-                reg.Close();
             }
         }
     }
