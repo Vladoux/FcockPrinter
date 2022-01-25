@@ -21,12 +21,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_19C35502C7624259AF8560CAEA1CD0B3"
-        "OwnerKey" = "8:_32D710CEA25742CAA42A87EB027B390C"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_2FE272EB087A54322674E07574813D4E"
         "OwnerKey" = "8:_469C5A9BD0BA21827D4A42D88FA5F1D9"
         "MsmSig" = "8:_UNDEFINED"
@@ -63,12 +57,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_7B6F6F25B115F7E41D071A99BC7BBFCB"
-        "OwnerKey" = "8:_32D710CEA25742CAA42A87EB027B390C"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_7EB39564DBF343F8A2B287C1A191DFD4"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -81,26 +69,44 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_A59E5ECB4A3D1E483796A250D4AC2577"
+        "MsmKey" = "8:_861184AA5236A01AEAB7D9DB90D92A8B"
+        "OwnerKey" = "8:_32D710CEA25742CAA42A87EB027B390C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D08EF9C2F03AEB9F701305201C466405"
+        "OwnerKey" = "8:_32D710CEA25742CAA42A87EB027B390C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D3D66B811788A30B75BF0A1659735283"
         "OwnerKey" = "8:_32D710CEA25742CAA42A87EB027B390C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_A59E5ECB4A3D1E483796A250D4AC2577"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_19C35502C7624259AF8560CAEA1CD0B3"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_32D710CEA25742CAA42A87EB027B390C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_861184AA5236A01AEAB7D9DB90D92A8B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_D3D66B811788A30B75BF0A1659735283"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_D08EF9C2F03AEB9F701305201C466405"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -127,12 +133,6 @@
         "OwnerKey" = "8:_6E65D95520DCAF370F72DAF79E167FF4"
         "MsmSig" = "8:_UNDEFINED"
         }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_7B6F6F25B115F7E41D071A99BC7BBFCB"
-        "MsmSig" = "8:_UNDEFINED"
-        }
     }
     "Configurations"
     {
@@ -151,6 +151,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
+            }
         }
         "Release"
         {
@@ -167,6 +183,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -228,37 +252,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_19C35502C7624259AF8560CAEA1CD0B3"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:PdfiumViewer, Version=2.13.0.0, Culture=neutral, PublicKeyToken=91e4789cfb0609e0, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_19C35502C7624259AF8560CAEA1CD0B3"
-                    {
-                    "Name" = "8:PdfiumViewer.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:PdfiumViewer.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_B1F6C50D3D0F4701981DAAC0FAC96CBC"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2FE272EB087A54322674E07574813D4E"
@@ -385,37 +378,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_7B6F6F25B115F7E41D071A99BC7BBFCB"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:System.Drawing.Common, Version=4.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_7B6F6F25B115F7E41D071A99BC7BBFCB"
-                    {
-                    "Name" = "8:System.Drawing.Common.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:System.Drawing.Common.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_B1F6C50D3D0F4701981DAAC0FAC96CBC"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7EB39564DBF343F8A2B287C1A191DFD4"
             {
             "SourcePath" = "8:..\\fair-mark-desktop\\bin\\Debug\\x86\\pdfium.dll"
@@ -456,20 +418,82 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A59E5ECB4A3D1E483796A250D4AC2577"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_861184AA5236A01AEAB7D9DB90D92A8B"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:System.Drawing.Common, Version=4.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_861184AA5236A01AEAB7D9DB90D92A8B"
+                    {
+                    "Name" = "8:System.Drawing.Common.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:System.Drawing.Common.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B1F6C50D3D0F4701981DAAC0FAC96CBC"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D08EF9C2F03AEB9F701305201C466405"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:MaterialSkin, Version=2.3.1.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_A59E5ECB4A3D1E483796A250D4AC2577"
+                    "_D08EF9C2F03AEB9F701305201C466405"
                     {
                     "Name" = "8:MaterialSkin.dll"
                     "Attributes" = "3:512"
                     }
                 }
             "SourcePath" = "8:MaterialSkin.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B1F6C50D3D0F4701981DAAC0FAC96CBC"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D3D66B811788A30B75BF0A1659735283"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:PdfiumViewer, Version=2.13.0.0, Culture=neutral, PublicKeyToken=91e4789cfb0609e0, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_D3D66B811788A30B75BF0A1659735283"
+                    {
+                    "Name" = "8:PdfiumViewer.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:PdfiumViewer.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B1F6C50D3D0F4701981DAAC0FAC96CBC"
@@ -577,11 +601,11 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Fcode"
         "ProductCode" = "8:{BD7206CA-1E0F-4456-BC28-F3E3EF664FE4}"
-        "PackageCode" = "8:{3429838F-573F-40F1-A205-FB6E98549127}"
+        "PackageCode" = "8:{B324586D-626E-4AF4-99E1-422A6B2FD49C}"
         "UpgradeCode" = "8:{8F5C6596-7932-4886-83CC-A5AE234D48E6}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
         "ProductVersion" = "8:0.0.1"
@@ -716,13 +740,13 @@
                                                 }
                                                 "Values"
                                                 {
-                                                    "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_AB7C9F7905AA4E7F8044B0C8954336F4"
+                                                    "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_2D3D875C2D2148D482DBFEEC35DEB604"
                                                     {
                                                     "Name" = "8:(Default)"
                                                     "Condition" = "8:"
                                                     "Transitive" = "11:FALSE"
-                                                    "ValueTypes" = "3:1"
-                                                    "Value" = "8:$\"\\\"{Application.ExecutablePath}\\\" %1\""
+                                                    "ValueTypes" = "3:2"
+                                                    "Value" = "8:"
                                                     }
                                                 }
                                             }

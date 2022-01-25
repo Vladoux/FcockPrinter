@@ -18,8 +18,8 @@ namespace fair_mark_desktop.Extensions
         /// <param name="text"></param>
         public static void FirstCreateFile(this string source, string text = null)
         {
-            var result = source.CreateNotExistDirectories();
-            if (result && text != null)
+            source.CreateNotExistDirectories();
+            if (!File.Exists(source) && text != null)
                 File.WriteAllText(source, text);
         }
 

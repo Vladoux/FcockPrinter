@@ -59,14 +59,14 @@ namespace fair_mark_desktop
         
         private static void CheckRegistry()
         {
-            var keyTest = Registry.ClassesRoot;
+            //var keyTest = Registry.ClassesRoot;
 
-            if (!keyTest.GetSubKeyNames().Contains(RegistryFolderValue))
-            {
-                RegistryKey key = keyTest.CreateSubKey(RegistryFolderValue);
-                key.SetValue("URL Protocol", $"{RegistryFolderValue} Protocol");
-                key.CreateSubKey(@"shell\open\command").SetValue("", $"\"{Application.ExecutablePath}\" %1");
-            }
+            //if (!keyTest.GetSubKeyNames().Contains(RegistryFolderValue))
+            //{
+            //    RegistryKey key = keyTest.CreateSubKey(RegistryFolderValue);
+            //    key.SetValue("URL Protocol", $"{RegistryFolderValue} Protocol");
+            //    key.CreateSubKey(@"shell\open\command").SetValue("", $"\"{Application.ExecutablePath}\" %1");
+            //}
         }
     }
 }

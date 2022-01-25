@@ -25,9 +25,9 @@ namespace fair_mark_desktop
         private string ext;
         private bool fileDownloaded = false;
         private bool isHiden;
-        private readonly static string path = $"{Path.GetTempPath()}\\FCode";
+        private readonly static string path = $"{Path.GetTempPath()}FCode";
         private readonly static string urlFilePath = $"{path}\\url.txt";
-        private readonly static string hiddenFilePath = $"{path}/IsHiden.txt";
+        private readonly static string hiddenFilePath = $"{path}\\IsHiden.txt";
         private List<string> fullFilePaths = new List<string>();
         public Form1()
         {
