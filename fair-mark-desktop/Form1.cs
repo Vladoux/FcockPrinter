@@ -37,7 +37,7 @@ namespace fair_mark_desktop
         {
             InitializeComponent();
             InitMatetialColor();
-            Text = $"FairCode {Application.ProductVersion}";
+            Text = $"FairCode {ApplicationSettings.GetNormalizeProductVersion()}";
 
             WorkSchedulerService.IntervalInHours(1, async () => await CheckVersion());
             Watcher();
@@ -109,12 +109,13 @@ namespace fair_mark_desktop
                     fullFilePaths.Add(x);
                     var item = new MaterialCheckbox()
                     {
-                        Text = x.GetFileNameFromPath(),
+                        Text = x.GetFileNameFromPath() + " (" + x.GetCountPagesPdf() + " стр.)",
                         Checked = false,
                     };
                     item.CheckedChanged += (sender, e) =>
                     {
                         materialButton3.Enabled = materialCheckedListBox1.Items.Any(z => z.Checked);
+                        selectAllSwitch.Checked = materialCheckedListBox1.Items.All(z => z.Checked);
                     };
                     materialCheckedListBox1.Items.Add(item);
                 });
@@ -199,7 +200,7 @@ namespace fair_mark_desktop
 
         private void OnUrlFileChanged(object sender, FileSystemEventArgs e)
         {
-            if (e.FullPath != urlFilePath) return;
+            if (e.FullPath.Replace("\\\\", "\\") != urlFilePath) return;
 
             if (!autoPrintSwitch.Checked)
             {
@@ -229,7 +230,8 @@ namespace fair_mark_desktop
             materialCheckedListBox1.Items.ForEach(x =>
             {
                 if (x.Checked)
-                    toPrintFiles.Add(fullFilePaths.FirstOrDefault(full => full.Contains(x.Text)));
+                    toPrintFiles.Add(fullFilePaths
+                        .FirstOrDefault(full => full.Contains(x.Text.Substring(0, x.Text.IndexOf("(") - 1))));
             });
 
             ShowDialogPrinter(toPrintFiles);
@@ -264,10 +266,7 @@ namespace fair_mark_desktop
 
         public async Task CheckVersion()
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
-            string version = $"{fvi.FileMajorPart}.{fvi.FileMinorPart}.{fvi.FileBuildPart}";
-
+            var version = ApplicationSettings.GetNormalizeProductVersion();
             var fmarkService = new FMarkApiService();
             var result = await fmarkService.CheckNewVersion();
             if (result.IsSuccess && !Equals(version, result.Value))

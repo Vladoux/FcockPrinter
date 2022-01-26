@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using iTextSharp.text.pdf;
+using System.IO;
 using System.Linq;
 
 namespace fair_mark_desktop.Extensions
@@ -49,6 +50,14 @@ namespace fair_mark_desktop.Extensions
         public static string GetFileNameFromPath(this string source)
         {
             return source.Split('\\').Last();
+        }
+
+        public static int GetCountPagesPdf(this string source)
+        {
+            var pdfReader = new PdfReader(source);
+            var result = pdfReader.NumberOfPages;
+            pdfReader.Close();
+            return result;
         }
     }
 }
