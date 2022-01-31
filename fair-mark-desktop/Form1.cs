@@ -37,7 +37,7 @@ namespace fair_mark_desktop
         {
             InitializeComponent();
             InitMatetialColor();
-            Text = $"FairCode {ApplicationSettings.GetNormalizeProductVersion()}";
+            Text = $"FairCode Print {ApplicationSettings.GetNormalizeProductVersion()}";
 
             WorkSchedulerService.IntervalInHours(1, async () => await CheckVersion());
             Watcher();
