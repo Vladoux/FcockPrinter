@@ -110,7 +110,7 @@ namespace fair_mark_desktop
                     var item = new MaterialCheckbox()
                     {
                         Text = x.GetFileNameFromPath() + " (" + x.GetCountPagesPdf() + " стр.)",
-                        Checked = false,
+                        Checked = true,
                     };
                     item.CheckedChanged += (sender, e) =>
                     {
