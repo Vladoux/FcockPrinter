@@ -11,9 +11,11 @@ namespace fair_mark_desktop.Service
 {
     public class FMarkApiService
     {
-        //private const string _baseUrl = "http://94.198.50.203:81/api";
+#if DEBUG
         private const string _baseUrl = "http://10.81.80.6:6162";
-        
+#else
+        private const string _baseUrl = "http://94.198.50.203:81/api";
+#endif   
         public async Task<ResponseResult> CheckNewVersion()
         {
             try
@@ -43,7 +45,7 @@ namespace fair_mark_desktop.Service
                     Message = e.Message
                 };
             }
-            
+
         }
     }
 
