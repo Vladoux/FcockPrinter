@@ -105,6 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\ApplicationExtensions.cs" />
+    <Compile Include="Extensions\ControlExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

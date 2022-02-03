@@ -8,13 +8,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Security.Permissions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -106,25 +104,6 @@ namespace fair_mark_desktop
             var hui = new List<string>();
             hui.AddRange(files.Select(x => x.FullName));
             AddFilesPrint(hui);
-            //materialCheckedListBox1.Invoke((MethodInvoker)(() =>
-            //{
-            //    filePrint.ForEach(x =>
-            //    {
-            //        fullFilePaths.Add(x);
-            //        var item = new MaterialCheckbox()
-            //        {
-            //            Text = x.GetFileNameFromPath() + " (" + x.GetCountPagesPdf() + " стр.)",
-            //            Checked = true,
-            //        };
-            //        item.CheckedChanged += (sender, e) =>
-            //        {
-            //            materialButton3.Enabled = materialCheckedListBox1.Items.Any(z => z.Checked);
-            //            materialButton2.Enabled = materialCheckedListBox1.Items.Any(z => z.Checked);
-            //            selectAllSwitch.Checked = materialCheckedListBox1.Items.All(z => z.Checked);
-            //        };
-            //        materialCheckedListBox1.Items.Add(item);
-            //    });
-            //}));
 
             if (isHiden)
             {
@@ -133,28 +112,29 @@ namespace fair_mark_desktop
         }
 
 
-        private void AddFilesPrint(List<string> FilesToAdd)
+        private void AddFilesPrint(List<string> filesToAdd)
         {
-
-            filePrint.AddRange(FilesToAdd);
+            filePrint.AddRange(filesToAdd);
 
             materialCheckedListBox1.Invoke((MethodInvoker)(() =>
             {
-                FilesToAdd.ForEach(x =>
+                filesToAdd.ForEach(x =>
                 {
                     fullFilePaths.Add(x);
                     var item = new MaterialCheckbox()
                     {
                         Text = x.GetFileNameFromPath() + " (" + x.GetCountPagesPdf() + " стр.)",
-                        Checked = true,
                     };
                     item.CheckedChanged += (sender, e) =>
                     {
                         materialButton3.Enabled = materialCheckedListBox1.Items.Any(z => z.Checked);
                         materialButton2.Enabled = materialCheckedListBox1.Items.Any(z => z.Checked);
-                        selectAllSwitch.Checked = materialCheckedListBox1.Items.All(z => z.Checked);
+
+                        if (!isSwitchBlock)
+                            selectAllSwitch.Checked = materialCheckedListBox1.Items.All(z => z.Checked);
                     };
                     materialCheckedListBox1.Items.Add(item);
+                    item.Checked = true;
                 });
             }));
         }
@@ -217,11 +197,15 @@ namespace fair_mark_desktop
 
         private void SendToPrinter(List<string> files)
         {
+            RemoveFromList(x => x.Checked);
             foreach (var file in files)
             {
-                var document = PdfDocument.Load(file);
-                var printDocument = document.CreatePrintDocument();
-                printDocument.Print();
+                if (File.Exists(file))
+                {
+                    var document = PdfDocument.Load(file);
+                    var printDocument = document.CreatePrintDocument();
+                    printDocument.Print();
+                }
             }
         }
 
@@ -241,11 +225,12 @@ namespace fair_mark_desktop
 
             Thread.Sleep(1000);
             var url = File.ReadAllText(urlFilePath);
+            if (string.IsNullOrEmpty(url)) return;
             if (downloadUrl != url)
             {
                 downloadUrl = url;
                 fileDownloaded = false;
-                materialProgressBar1.Value = 0;
+                materialProgressBar1.Execute(() => materialProgressBar1.Value = 0);
             }
 
             if (!string.IsNullOrEmpty(downloadUrl) && !fileDownloaded)
@@ -275,9 +260,12 @@ namespace fair_mark_desktop
             File.WriteAllText(hiddenFilePath, isHiden.ToString());
         }
 
+        private bool isSwitchBlock = false;
         private void materialSwitch3_CheckStateChanged(object sender, EventArgs e)
         {
+            isSwitchBlock = true;
             materialCheckedListBox1.Items.ForEach(x => x.Checked = selectAllSwitch.Checked);
+            isSwitchBlock = false;
         }
 
         static FileSystemWatcher watcher = null;
@@ -318,7 +306,16 @@ namespace fair_mark_desktop
 
         private void materialButton2_Click(object sender, EventArgs e)
         {
-            materialCheckedListBox1.Items.RemoveAll(x => x.Checked);
+            RemoveFromList(x => x.Checked);
+        }
+
+        public void RemoveFromList(Func<MaterialCheckbox, bool> pred)
+        {
+            while (materialCheckedListBox1.Items.Any(pred))
+            {
+                var item = materialCheckedListBox1.Items.FirstOrDefault(pred);
+                materialCheckedListBox1.Execute(() => materialCheckedListBox1.Items.Remove(item));
+            }
         }
 
         private void materialButton4_Click(object sender, EventArgs e)
@@ -345,20 +342,19 @@ namespace fair_mark_desktop
                     {
                         fileContent = reader.ReadToEnd();
                     }
+
+                    ext = filePath.Substring(filePath.Length - 3, 3);
+                    if (ext == "zip")
+                    {
+                        ExctractZip(filePath);
+                    }
+                    else if (ext == "pdf")
+                    {
+                        var print = new List<string> { filePath };
+                        AddFilesPrint(print);
+                    }
                 }
             }
-            ext = filePath.Substring(filePath.Length - 3, 3);
-            if (ext == "zip")
-            {
-                ExctractZip(filePath);
-            }
-            else if (ext == "pdf")
-            {
-                var print = new List<string> { filePath };
-                AddFilesPrint(print);
-                
-            }
-           
         }
     }
 }
