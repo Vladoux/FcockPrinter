@@ -2,6 +2,7 @@
 using fair_mark_desktop.Service;
 using MaterialSkin;
 using MaterialSkin.Controls;
+using Microsoft.Win32;
 using PdfiumViewer;
 using System;
 using System.Collections.Generic;
@@ -70,8 +71,9 @@ namespace fair_mark_desktop
                 var url = paramUrl.Substring(8);
                 WebClient client = new WebClient();
                 client.DownloadProgressChanged += wc_DownloadProgressChanged;
+                var pathtodownload = Registry.GetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders", "{374DE290-123F-4565-9164-39C4925E467B}", String.Empty).ToString();
                 client.DownloadFileTaskAsync(new Uri($"{url}"),
-                        Path.Combine(path, $"test.{ext}")).ContinueWith(x => ExctractZip());
+                        Path.Combine(pathtodownload, $"{url.Split('/').Last()}")).ContinueWith(x => ExctractZip(Path.Combine(pathtodownload, $"{url.Split('/').Last()}")));
 
                 return true;
             }
@@ -89,22 +91,56 @@ namespace fair_mark_desktop
         }
 
 
-        public void ExctractZip()
+        public void ExctractZip(string filename)
         {
             var pathExtract = Path.Combine(path, $"{DateTime.Now:dd-MM-yyyy-HH-mm-ss}");
             if (ext == "zip")
             {
                 Directory.CreateDirectory(pathExtract);
-                ZipFile.ExtractToDirectory(Path.Combine(path, $"test.{ext}"), pathExtract);
+                ZipFile.ExtractToDirectory(/*Path.Combine(path, $"test.{ext}")*/filename, pathExtract);
             }
             var dictinary = new DirectoryInfo(pathExtract);
             FileInfo[] files = dictinary.GetFiles("*.pdf");
 
-            filePrint.AddRange(files.Select(x => x.FullName));
+            //filePrint.AddRange(files.Select(x => x.FullName));
+            var hui = new List<string>();
+            hui.AddRange(files.Select(x => x.FullName));
+            AddFilesPrint(hui);
+            //materialCheckedListBox1.Invoke((MethodInvoker)(() =>
+            //{
+            //    filePrint.ForEach(x =>
+            //    {
+            //        fullFilePaths.Add(x);
+            //        var item = new MaterialCheckbox()
+            //        {
+            //            Text = x.GetFileNameFromPath() + " (" + x.GetCountPagesPdf() + " стр.)",
+            //            Checked = true,
+            //        };
+            //        item.CheckedChanged += (sender, e) =>
+            //        {
+            //            materialButton3.Enabled = materialCheckedListBox1.Items.Any(z => z.Checked);
+            //            materialButton2.Enabled = materialCheckedListBox1.Items.Any(z => z.Checked);
+            //            selectAllSwitch.Checked = materialCheckedListBox1.Items.All(z => z.Checked);
+            //        };
+            //        materialCheckedListBox1.Items.Add(item);
+            //    });
+            //}));
+
+            if (isHiden)
+            {
+                SendToPrinter(filePrint);
+            }
+        }
+
+
+        private void AddFilesPrint(List<string> FilesToAdd)
+        {
+
+            filePrint.AddRange(FilesToAdd);
 
             materialCheckedListBox1.Invoke((MethodInvoker)(() =>
             {
-                filePrint.ForEach(x =>
+                FilesToAdd.ForEach(x =>
                 {
                     fullFilePaths.Add(x);
                     var item = new MaterialCheckbox()
@@ -115,16 +151,12 @@ namespace fair_mark_desktop
                     item.CheckedChanged += (sender, e) =>
                     {
                         materialButton3.Enabled = materialCheckedListBox1.Items.Any(z => z.Checked);
+                        materialButton2.Enabled = materialCheckedListBox1.Items.Any(z => z.Checked);
                         selectAllSwitch.Checked = materialCheckedListBox1.Items.All(z => z.Checked);
                     };
                     materialCheckedListBox1.Items.Add(item);
                 });
             }));
-
-            if (isHiden)
-            {
-                SendToPrinter(filePrint);
-            }
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -282,6 +314,51 @@ namespace fair_mark_desktop
                 {
                     materialLabel1.Visible = false;
                 }));
+        }
+
+        private void materialButton2_Click(object sender, EventArgs e)
+        {
+            materialCheckedListBox1.Items.RemoveAll(x => x.Checked);
+        }
+
+        private void materialButton4_Click(object sender, EventArgs e)
+        {
+            var fileContent = string.Empty;
+            var filePath = string.Empty;
+
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.InitialDirectory = Registry.GetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders", "{374DE290-123F-4565-9164-39C4925E467B}", String.Empty).ToString();
+                openFileDialog.Filter = "pdf files (*.pdf)|*.pdf| zip files (*.zip)|*.zip";
+                openFileDialog.FilterIndex = 2;
+                openFileDialog.RestoreDirectory = true;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    //Get the path of specified file
+                    filePath = openFileDialog.FileName;
+
+                    //Read the contents of the file into a stream
+                    var fileStream = openFileDialog.OpenFile();
+
+                    using (StreamReader reader = new StreamReader(fileStream))
+                    {
+                        fileContent = reader.ReadToEnd();
+                    }
+                }
+            }
+            ext = filePath.Substring(filePath.Length - 3, 3);
+            if (ext == "zip")
+            {
+                ExctractZip(filePath);
+            }
+            else if (ext == "pdf")
+            {
+                var print = new List<string> { filePath };
+                AddFilesPrint(print);
+                
+            }
+           
         }
     }
 }

@@ -44,6 +44,8 @@ namespace fair_mark_desktop
             this.autoPrintSwitch = new MaterialSkin.Controls.MaterialSwitch();
             this.selectAllSwitch = new MaterialSkin.Controls.MaterialSwitch();
             this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
+            this.materialButton2 = new MaterialSkin.Controls.MaterialButton();
+            this.materialButton4 = new MaterialSkin.Controls.MaterialButton();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -83,7 +85,7 @@ namespace fair_mark_desktop
             this.materialButton1.Depth = 0;
             this.materialButton1.HighEmphasis = true;
             this.materialButton1.Icon = null;
-            this.materialButton1.Location = new System.Drawing.Point(454, 440);
+            this.materialButton1.Location = new System.Drawing.Point(453, 451);
             this.materialButton1.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.materialButton1.MinimumSize = new System.Drawing.Size(10, 36);
             this.materialButton1.MouseState = MaterialSkin.MouseState.HOVER;
@@ -117,7 +119,7 @@ namespace fair_mark_desktop
             this.materialButton3.Enabled = false;
             this.materialButton3.HighEmphasis = true;
             this.materialButton3.Icon = null;
-            this.materialButton3.Location = new System.Drawing.Point(3, 440);
+            this.materialButton3.Location = new System.Drawing.Point(3, 451);
             this.materialButton3.Margin = new System.Windows.Forms.Padding(4, 6, 4, 10);
             this.materialButton3.MaximumSize = new System.Drawing.Size(400, 36);
             this.materialButton3.MinimumSize = new System.Drawing.Size(200, 36);
@@ -224,12 +226,58 @@ namespace fair_mark_desktop
             this.materialLabel1.Text = "Доступна новая версия 1.0.4";
             this.materialLabel1.Visible = false;
             // 
+            // materialButton2
+            // 
+            this.materialButton2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.materialButton2.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.materialButton2.Depth = 0;
+            this.materialButton2.Enabled = false;
+            this.materialButton2.HighEmphasis = true;
+            this.materialButton2.Icon = null;
+            this.materialButton2.Location = new System.Drawing.Point(437, 356);
+            this.materialButton2.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.materialButton2.MinimumSize = new System.Drawing.Size(74, 0);
+            this.materialButton2.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialButton2.Name = "materialButton2";
+            this.materialButton2.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.materialButton2.Size = new System.Drawing.Size(91, 36);
+            this.materialButton2.TabIndex = 14;
+            this.materialButton2.Text = "Удалить";
+            this.materialButton2.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.materialButton2.UseAccentColor = false;
+            this.materialButton2.UseVisualStyleBackColor = true;
+            this.materialButton2.Click += new System.EventHandler(this.materialButton2_Click);
+            // 
+            // materialButton4
+            // 
+            this.materialButton4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.materialButton4.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.materialButton4.Depth = 0;
+            this.materialButton4.HighEmphasis = true;
+            this.materialButton4.Icon = null;
+            this.materialButton4.Location = new System.Drawing.Point(437, 403);
+            this.materialButton4.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.materialButton4.MaximumSize = new System.Drawing.Size(91, 0);
+            this.materialButton4.MinimumSize = new System.Drawing.Size(74, 0);
+            this.materialButton4.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialButton4.Name = "materialButton4";
+            this.materialButton4.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.materialButton4.Size = new System.Drawing.Size(91, 36);
+            this.materialButton4.TabIndex = 15;
+            this.materialButton4.Text = "Добавить";
+            this.materialButton4.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.materialButton4.UseAccentColor = false;
+            this.materialButton4.UseVisualStyleBackColor = true;
+            this.materialButton4.Click += new System.EventHandler(this.materialButton4_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(534, 479);
+            this.ClientSize = new System.Drawing.Size(534, 490);
+            this.Controls.Add(this.materialButton4);
+            this.Controls.Add(this.materialButton2);
             this.Controls.Add(this.materialLabel1);
             this.Controls.Add(this.selectAllSwitch);
             this.Controls.Add(this.autoPrintSwitch);
@@ -239,8 +287,8 @@ namespace fair_mark_desktop
             this.Controls.Add(this.materialProgressBar1);
             this.Controls.Add(this.materialButton1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximumSize = new System.Drawing.Size(534, 479);
-            this.MinimumSize = new System.Drawing.Size(534, 479);
+            this.MaximumSize = new System.Drawing.Size(534, 490);
+            this.MinimumSize = new System.Drawing.Size(534, 490);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FairCode Print";
@@ -264,6 +312,8 @@ namespace fair_mark_desktop
         private MaterialSkin.Controls.MaterialSwitch autoPrintSwitch;
         private MaterialSkin.Controls.MaterialSwitch selectAllSwitch;
         private MaterialSkin.Controls.MaterialLabel materialLabel1;
+        private MaterialSkin.Controls.MaterialButton materialButton2;
+        private MaterialSkin.Controls.MaterialButton materialButton4;
     }
 }
 
