@@ -126,6 +126,7 @@ namespace fair_mark_desktop
             this.defaultPrinterSwitch.Name = "defaultPrinterSwitch";
             this.defaultPrinterSwitch.Ripple = true;
             this.defaultPrinterSwitch.UseVisualStyleBackColor = true;
+            this.defaultPrinterSwitch.CheckedChanged += new System.EventHandler(this.defaultPrinterSwitch_CheckedChanged);
             // 
             // materialCheckedListBox1
             // 
@@ -231,9 +232,10 @@ namespace fair_mark_desktop
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.MaximizeBox = false;
             this.Name = "Form1";
             this.ShowInTaskbar = false;
+            this.Activated += new System.EventHandler(this.Form1_Activated);
             this.contextMenuStrip1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();

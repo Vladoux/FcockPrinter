@@ -125,8 +125,7 @@ namespace fair_mark_desktop
                     item.CheckedChanged += (sender, e) =>
                     {
                         blockFromItem = true;
-                        materialButton3.Enabled = materialCheckedListBox1.Items.Any(z => z.Checked);
-                        materialButton2.Enabled = materialCheckedListBox1.Items.Any(z => z.Checked);
+                        UpdateButtonsState();
 
                         if (!isSwitchBlock)
                             selectAllSwitch.Checked = materialCheckedListBox1.Items.All(z => z.Checked);
@@ -142,6 +141,12 @@ namespace fair_mark_desktop
                     item.Checked = true;
                 });
             }));
+        }
+
+        private void UpdateButtonsState()
+        {
+            materialButton3.Enabled = materialCheckedListBox1.Items.Any(z => z.Checked);
+            materialButton2.Enabled = materialCheckedListBox1.Items.Any(z => z.Checked);
         }
 
         private void OpenFileHandler(object sender, EventArgs e)
@@ -204,9 +209,10 @@ namespace fair_mark_desktop
 
         private void ShowDialogPrinter()
         {
-            if (!defaultPrinterSwitch.Checked && new PrintDialog().ShowDialog() == DialogResult.OK)
+            if (!defaultPrinterSwitch.Checked)
             {
-                SendToPrinter();
+                if (new PrintDialog().ShowDialog() == DialogResult.OK)
+                    SendToPrinter();
             }
             else
                 SendToPrinter();
@@ -309,7 +315,7 @@ namespace fair_mark_desktop
             {
                 materialLabel1.Invoke((MethodInvoker)(() =>
                 {
-                    materialLabel1.Text = $"Доступна новая версия - {result.Value}";
+                    materialLabel1.Text = $"Доступна новая версия {result.Value}";
                     materialLabel1.Visible = true;
                 }));
             }
@@ -333,6 +339,10 @@ namespace fair_mark_desktop
                 materialCheckedListBox1.Execute(() => materialCheckedListBox1.Items.Remove(item));
                 storateFiles.Remove(item.Value);
             }
+
+            UpdateButtonsState();
+            if (!materialCheckedListBox1.Items.Any())
+                selectAllSwitch.Checked = false;
         }
 
         private void materialButton4_Click(object sender, EventArgs e)
@@ -370,6 +380,17 @@ namespace fair_mark_desktop
                     }
                 }
             }
+        }
+
+        private void Form1_Activated(object sender, EventArgs e)
+        {
+            materialButton3.Focus();
+        }
+
+        private void defaultPrinterSwitch_CheckedChanged(object sender, EventArgs e)
+        {
+            if (autoPrintSwitch.Checked)
+                defaultPrinterSwitch.Checked = true;
         }
     }
 }
