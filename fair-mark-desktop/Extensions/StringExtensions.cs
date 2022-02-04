@@ -59,5 +59,10 @@ namespace fair_mark_desktop.Extensions
             pdfReader.Close();
             return result;
         }
+
+        public static string ReadFromFile(this string source)
+        {
+            return File.Exists(source) ? File.ReadAllText(source) : null;
+        }
     }
 }

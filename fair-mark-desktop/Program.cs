@@ -22,7 +22,6 @@ namespace fair_mark_desktop
         [STAThread]
         static void Main(string[] args)
         {
-
             using (Mutex mutex = new Mutex(true, "fair-mark-desktop", out var createdNew))
             {
                 if (createdNew)

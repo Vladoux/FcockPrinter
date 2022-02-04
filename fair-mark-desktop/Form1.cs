@@ -1,4 +1,5 @@
-﻿using fair_mark_desktop.Extensions;
+﻿using fair_mark_desktop.CustomModels;
+using fair_mark_desktop.Extensions;
 using fair_mark_desktop.Service;
 using MaterialSkin;
 using MaterialSkin.Controls;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.IO.Compression;
@@ -23,7 +25,6 @@ namespace fair_mark_desktop
     public partial class Form1 : MaterialForm
     {
         private MaterialSkinManager materialSkinManager;
-        private readonly List<string> filePrint;
         private string downloadUrl;
         private string ext;
         private bool fileDownloaded = false;
@@ -31,7 +32,7 @@ namespace fair_mark_desktop
         private readonly static string path = $"{Path.GetTempPath()}FCode";
         private readonly static string urlFilePath = $"{path}\\url.txt";
         private readonly static string hiddenFilePath = $"{path}\\IsHiden.txt";
-        private List<string> fullFilePaths = new List<string>();
+        private readonly StorageFilePaths storateFiles = new StorageFilePaths();
         public Form1(string[] args)
         {
             InitializeComponent();
@@ -39,18 +40,18 @@ namespace fair_mark_desktop
             Text = $"FairCode Print {ApplicationSettings.GetNormalizeProductVersion()}";
 
             WorkSchedulerService.IntervalInHours(1, async () => await CheckVersion());
-            Watcher();
 
             hiddenFilePath.FirstCreateFile("False");
             isHiden = File.ReadAllText(hiddenFilePath) == "True";
+            Watcher();
 
-            filePrint = new List<string>();
             notifyIcon1.Visible = false;
             autoPrintSwitch.Checked = isHiden;
             notifyIcon1.MouseDoubleClick += new MouseEventHandler(notifyIcon1_MouseDoubleClick);
             Resize += new EventHandler(Form1_Resize);
 
             Path.Combine(Path.GetTempPath(), $"FCode\\url.txt").WriteToFile(args.FirstOrDefault());
+            AddFilesPrint(storateFiles.GetPaths());
         }
 
         private void InitMatetialColor()
@@ -102,29 +103,24 @@ namespace fair_mark_desktop
             var dictinary = new DirectoryInfo(pathExtract);
             FileInfo[] files = dictinary.GetFiles("*.pdf");
 
-            var hui = new List<string>();
-            hui.AddRange(files.Select(x => x.FullName));
-            AddFilesPrint(hui);
+            AddFilesPrint(files.Select(x => x.FullName).ToList());
 
             if (isHiden)
-            {
-                SendToPrinter(filePrint);
-            }
+                SendToPrinter();
         }
-
 
         private void AddFilesPrint(List<string> filesToAdd)
         {
-            filePrint.AddRange(filesToAdd);
+            storateFiles.AddRange(filesToAdd);
 
             materialCheckedListBox1.Invoke((MethodInvoker)(() =>
             {
                 filesToAdd.ForEach(x =>
                 {
-                    fullFilePaths.Add(x);
-                    var item = new MaterialCheckbox()
+                    var item = new CustomMaterailCheckBox()
                     {
                         Text = x.GetFileNameFromPath() + " (" + x.GetCountPagesPdf() + " стр.)",
+                        Value = x
                     };
                     item.CheckedChanged += (sender, e) =>
                     {
@@ -136,24 +132,46 @@ namespace fair_mark_desktop
                             selectAllSwitch.Checked = materialCheckedListBox1.Items.All(z => z.Checked);
                         blockFromItem = false;
                     };
+
+                    item.CreateContextMenu(new Dictionary<string, EventHandler>()
+                    {
+                        { "Открыть",  OpenFileHandler},
+                        { "Показать в папке", ShowFolderHandler}
+                    });
                     materialCheckedListBox1.Items.Add(item);
                     item.Checked = true;
                 });
             }));
         }
 
+        private void OpenFileHandler(object sender, EventArgs e)
+        {
+            var itemPath = ((CustomMaterailCheckBox)((MaterialToolStripMenuItem)sender).GetItemBoxFromContext()).Value;
+            Process.Start(itemPath);
+        }
+        private void ShowFolderHandler(object sender, EventArgs e)
+        {
+            var itemPath = ((CustomMaterailCheckBox)((MaterialToolStripMenuItem)sender).GetItemBoxFromContext()).Value;
+            Process.Start("explorer.exe", Path.GetDirectoryName(itemPath));
+        }
+
         private void Form1_Resize(object sender, EventArgs e)
         {
             if (WindowState == FormWindowState.Minimized)
             {
-                ShowInTaskbar = false;
-                notifyIcon1.Visible = true;
+                ToTray();
             }
         }
 
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             OpenForm();
+        }
+
+        public void ToTray()
+        {
+            ShowInTaskbar = false;
+            notifyIcon1.Visible = true;
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -184,26 +202,22 @@ namespace fair_mark_desktop
             Activate();
         }
 
-        private void ShowDialogPrinter(List<string> files)
+        private void ShowDialogPrinter()
         {
-            if (defaultPrinterSwitch.Checked == true)
+            if (!defaultPrinterSwitch.Checked && new PrintDialog().ShowDialog() == DialogResult.OK)
             {
-                SendToPrinter(files);
+                SendToPrinter();
             }
             else
-            {
-                var pd = new PrintDialog();
-                if (pd.ShowDialog() == DialogResult.OK)
-                {
-                    SendToPrinter(files);
-                }
-            }
+                SendToPrinter();
         }
 
-        private void SendToPrinter(List<string> files)
+        private void SendToPrinter()
         {
+            var list = materialCheckedListBox1.Items.Where(x => x.Checked)
+                .Select(x => ((CustomMaterailCheckBox)x).Value).ToList();
             RemoveFromList(x => x.Checked);
-            foreach (var file in files)
+            foreach (var file in list)
             {
                 if (File.Exists(file))
                 {
@@ -216,7 +230,8 @@ namespace fair_mark_desktop
 
         private void materialButton1_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            WindowState = FormWindowState.Minimized;
+            ToTray();
         }
 
         private void OnUrlFileChanged(object sender, FileSystemEventArgs e)
@@ -248,21 +263,15 @@ namespace fair_mark_desktop
 
         private void materialButton3_Click(object sender, EventArgs e)
         {
-            var toPrintFiles = new List<string>();
-            materialCheckedListBox1.Items.ForEach(x =>
-            {
-                if (x.Checked)
-                    toPrintFiles.Add(fullFilePaths
-                        .FirstOrDefault(full => full.Contains(x.Text.Substring(0, x.Text.IndexOf("(") - 1))));
-            });
-
-            ShowDialogPrinter(toPrintFiles);
+            ShowDialogPrinter();
         }
 
         private void materialSwitch2_CheckedChanged(object sender, EventArgs e)
         {
             isHiden = ((MaterialSwitch)sender).CheckState == CheckState.Checked && (isHiden = true);
             File.WriteAllText(hiddenFilePath, isHiden.ToString());
+            if (isHiden)
+                defaultPrinterSwitch.Checked = true;
         }
 
         private bool isSwitchBlock = false;
@@ -320,8 +329,9 @@ namespace fair_mark_desktop
         {
             while (materialCheckedListBox1.Items.Any(pred))
             {
-                var item = materialCheckedListBox1.Items.FirstOrDefault(pred);
+                var item = (CustomMaterailCheckBox)materialCheckedListBox1.Items.FirstOrDefault(pred);
                 materialCheckedListBox1.Execute(() => materialCheckedListBox1.Items.Remove(item));
+                storateFiles.Remove(item.Value);
             }
         }
 
