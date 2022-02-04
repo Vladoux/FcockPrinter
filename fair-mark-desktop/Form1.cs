@@ -32,7 +32,7 @@ namespace fair_mark_desktop
         private readonly static string urlFilePath = $"{path}\\url.txt";
         private readonly static string hiddenFilePath = $"{path}\\IsHiden.txt";
         private List<string> fullFilePaths = new List<string>();
-        public Form1()
+        public Form1(string[] args)
         {
             InitializeComponent();
             InitMatetialColor();
@@ -49,6 +49,8 @@ namespace fair_mark_desktop
             autoPrintSwitch.Checked = isHiden;
             notifyIcon1.MouseDoubleClick += new MouseEventHandler(notifyIcon1_MouseDoubleClick);
             Resize += new EventHandler(Form1_Resize);
+
+            Path.Combine(Path.GetTempPath(), $"FCode\\url.txt").WriteToFile(args.FirstOrDefault());
         }
 
         private void InitMatetialColor()
@@ -95,12 +97,11 @@ namespace fair_mark_desktop
             if (ext == "zip")
             {
                 Directory.CreateDirectory(pathExtract);
-                ZipFile.ExtractToDirectory(/*Path.Combine(path, $"test.{ext}")*/filename, pathExtract);
+                ZipFile.ExtractToDirectory(filename, pathExtract);
             }
             var dictinary = new DirectoryInfo(pathExtract);
             FileInfo[] files = dictinary.GetFiles("*.pdf");
 
-            //filePrint.AddRange(files.Select(x => x.FullName));
             var hui = new List<string>();
             hui.AddRange(files.Select(x => x.FullName));
             AddFilesPrint(hui);
@@ -127,11 +128,13 @@ namespace fair_mark_desktop
                     };
                     item.CheckedChanged += (sender, e) =>
                     {
+                        blockFromItem = true;
                         materialButton3.Enabled = materialCheckedListBox1.Items.Any(z => z.Checked);
                         materialButton2.Enabled = materialCheckedListBox1.Items.Any(z => z.Checked);
 
                         if (!isSwitchBlock)
                             selectAllSwitch.Checked = materialCheckedListBox1.Items.All(z => z.Checked);
+                        blockFromItem = false;
                     };
                     materialCheckedListBox1.Items.Add(item);
                     item.Checked = true;
@@ -177,6 +180,8 @@ namespace fair_mark_desktop
             notifyIcon1.Visible = false;
             ShowInTaskbar = true;
             WindowState = FormWindowState.Normal;
+            Focus();
+            Activate();
         }
 
         private void ShowDialogPrinter(List<string> files)
@@ -200,12 +205,12 @@ namespace fair_mark_desktop
             RemoveFromList(x => x.Checked);
             foreach (var file in files)
             {
-                if (File.Exists(file))
-                {
-                    var document = PdfDocument.Load(file);
-                    var printDocument = document.CreatePrintDocument();
-                    printDocument.Print();
-                }
+                //if (File.Exists(file))
+                //{
+                //    var document = PdfDocument.Load(file);
+                //    var printDocument = document.CreatePrintDocument();
+                //    printDocument.Print();
+                //}
             }
         }
 
@@ -261,10 +266,12 @@ namespace fair_mark_desktop
         }
 
         private bool isSwitchBlock = false;
+        private bool blockFromItem = false;
         private void materialSwitch3_CheckStateChanged(object sender, EventArgs e)
         {
             isSwitchBlock = true;
-            materialCheckedListBox1.Items.ForEach(x => x.Checked = selectAllSwitch.Checked);
+            if (!blockFromItem)
+                materialCheckedListBox1.Items.ForEach(x => x.Checked = selectAllSwitch.Checked);
             isSwitchBlock = false;
         }
 

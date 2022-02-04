@@ -80,18 +80,17 @@ namespace fair_mark_desktop
             // 
             // materialButton1
             // 
-            this.materialButton1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.materialButton1.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             this.materialButton1.Depth = 0;
             this.materialButton1.HighEmphasis = true;
             this.materialButton1.Icon = null;
-            this.materialButton1.Location = new System.Drawing.Point(453, 451);
+            this.materialButton1.Location = new System.Drawing.Point(411, 451);
             this.materialButton1.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.materialButton1.MinimumSize = new System.Drawing.Size(10, 36);
             this.materialButton1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialButton1.Name = "materialButton1";
             this.materialButton1.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.materialButton1.Size = new System.Drawing.Size(74, 36);
+            this.materialButton1.Size = new System.Drawing.Size(116, 36);
             this.materialButton1.TabIndex = 4;
             this.materialButton1.Text = "Выход";
             this.materialButton1.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
@@ -255,7 +254,7 @@ namespace fair_mark_desktop
             this.materialButton4.Depth = 0;
             this.materialButton4.HighEmphasis = true;
             this.materialButton4.Icon = null;
-            this.materialButton4.Location = new System.Drawing.Point(437, 403);
+            this.materialButton4.Location = new System.Drawing.Point(341, 356);
             this.materialButton4.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.materialButton4.MaximumSize = new System.Drawing.Size(91, 0);
             this.materialButton4.MinimumSize = new System.Drawing.Size(74, 0);
