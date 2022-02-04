@@ -205,12 +205,12 @@ namespace fair_mark_desktop
             RemoveFromList(x => x.Checked);
             foreach (var file in files)
             {
-                //if (File.Exists(file))
-                //{
-                //    var document = PdfDocument.Load(file);
-                //    var printDocument = document.CreatePrintDocument();
-                //    printDocument.Print();
-                //}
+                if (File.Exists(file))
+                {
+                    var document = PdfDocument.Load(file);
+                    var printDocument = document.CreatePrintDocument();
+                    printDocument.Print();
+                }
             }
         }
 
@@ -339,10 +339,8 @@ namespace fair_mark_desktop
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    //Get the path of specified file
                     filePath = openFileDialog.FileName;
 
-                    //Read the contents of the file into a stream
                     var fileStream = openFileDialog.OpenFile();
 
                     using (StreamReader reader = new StreamReader(fileStream))

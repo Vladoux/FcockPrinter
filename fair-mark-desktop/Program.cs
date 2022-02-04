@@ -16,11 +16,6 @@ namespace fair_mark_desktop
 
     static class Program
     {
-        [DllImport("user32.dll")]
-        static extern IntPtr SetForegroundWindow(IntPtr hWnd);
-        [DllImport("user32.dll")]
-        static extern IntPtr ShowWindow(IntPtr hWnd, int nCmdShow);
-
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -39,15 +34,6 @@ namespace fair_mark_desktop
                 else
                 {
                     Path.Combine(Path.GetTempPath(), $"FCode\\url.txt").WriteToFile(args.FirstOrDefault());
-                    Process[] procs = Process.GetProcessesByName(Application.ProductName);
-                    //if (procs.Length > 1)
-                    //{
-                    //    int index;
-                    //    if ((int)procs[0].MainWindowHandle != 0) index = 0;
-                    //    else index = 1;
-                    //    SetForegroundWindow(procs[index].MainWindowHandle);
-                    //    return;
-                    //}
                 }
             }
         }
