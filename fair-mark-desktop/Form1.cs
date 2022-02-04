@@ -45,7 +45,7 @@ namespace fair_mark_desktop
             isHiden = File.ReadAllText(hiddenFilePath) == "True";
             Watcher();
 
-            notifyIcon1.Visible = false;
+            notifyIcon1.Visible = true;
             autoPrintSwitch.Checked = isHiden;
             notifyIcon1.MouseDoubleClick += new MouseEventHandler(notifyIcon1_MouseDoubleClick);
             Resize += new EventHandler(Form1_Resize);
