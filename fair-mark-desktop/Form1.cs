@@ -72,10 +72,9 @@ namespace fair_mark_desktop
                 var url = paramUrl.Substring(8);
                 WebClient client = new WebClient();
                 client.DownloadProgressChanged += wc_DownloadProgressChanged;
-                var pathtodownload = Registry.GetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders", "{374DE290-123F-4565-9164-39C4925E467B}", String.Empty).ToString();
-                client.DownloadFileTaskAsync(new Uri($"{url}"),
-                        Path.Combine(pathtodownload, $"{url.Split('/').Last()}")).ContinueWith(x => ExctractZip(Path.Combine(pathtodownload, $"{url.Split('/').Last()}")));
 
+                client.DownloadFileTaskAsync(new Uri($"{url}"),
+                   Path.Combine(path, $"test.{ext}")).ContinueWith(x => ExctractZip(Path.Combine(path, $"test.{ext}")));
                 return true;
             }
             catch (Exception e)
@@ -92,13 +91,21 @@ namespace fair_mark_desktop
         }
 
 
-        public void ExctractZip(string filename)
+        public void ExctractZip(string pathtofile)
         {
-            var pathExtract = Path.Combine(path, $"{DateTime.Now:dd-MM-yyyy-HH-mm-ss}");
+            var pathtoextract = Path.Combine(path, $"downloads");
+            if (!Directory.Exists(pathtoextract))
+            {
+                Directory.CreateDirectory(pathtoextract);
+                var strCmdText = $"ForFiles /p \"{pathtoextract}\" /s /d -60 /c \"cmd /c del /q @file\"";
+                System.Diagnostics.Process.Start("cmd.exe", strCmdText);
+            }
+
+            var pathExtract = Path.Combine(pathtoextract, $"{DateTime.Now:dd-MM-yyyy-HH-mm-ss}");
             if (ext == "zip")
             {
                 Directory.CreateDirectory(pathExtract);
-                ZipFile.ExtractToDirectory(filename, pathExtract);
+                ZipFile.ExtractToDirectory(pathtofile, pathExtract);
             }
             var dictinary = new DirectoryInfo(pathExtract);
             FileInfo[] files = dictinary.GetFiles("*.pdf");
