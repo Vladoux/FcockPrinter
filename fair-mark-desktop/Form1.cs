@@ -40,7 +40,7 @@ namespace fair_mark_desktop
             Text = $"FairCode Print {ApplicationSettings.GetNormalizeProductVersion()}";
 
             WorkSchedulerService.IntervalInHours(1, async () => await CheckVersion());
-
+            WorkSchedulerService.IntervalInHours(1/60.0, () => (Path.Combine(path, $"downloads")).Clean());
             hiddenFilePath.FirstCreateFile("False");
             isHiden = File.ReadAllText(hiddenFilePath) == "True";
             Watcher();
@@ -97,8 +97,6 @@ namespace fair_mark_desktop
             if (!Directory.Exists(pathtoextract))
             {
                 Directory.CreateDirectory(pathtoextract);
-                var strCmdText = $"ForFiles /p \"{pathtoextract}\" /s /d -60 /c \"cmd /c del /q @file\"";
-                System.Diagnostics.Process.Start("cmd.exe", strCmdText);
             }
 
             var pathExtract = Path.Combine(pathtoextract, $"{DateTime.Now:dd-MM-yyyy-HH-mm-ss}");
@@ -111,7 +109,7 @@ namespace fair_mark_desktop
             FileInfo[] files = dictinary.GetFiles("*.pdf");
 
             AddFilesPrint(files.Select(x => x.FullName).ToList());
-
+           
             if (isHiden)
                 SendToPrinter();
         }

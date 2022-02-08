@@ -1,4 +1,6 @@
 ﻿using iTextSharp.text.pdf;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -63,6 +65,18 @@ namespace fair_mark_desktop.Extensions
         public static string ReadFromFile(this string source)
         {
             return File.Exists(source) ? File.ReadAllText(source) : null;
+        }
+        public static void Clean (this string source)
+        {
+            if (Directory.Exists(source))
+            {
+                var list = Directory.GetDirectories(source);
+                foreach (var item in list)
+                {
+                    var days = (DateTime.Today - Directory.GetCreationTime(item)).TotalDays;
+                    if (days > 30) Directory.Delete(item,true);
+                };
+            }
         }
     }
 }
