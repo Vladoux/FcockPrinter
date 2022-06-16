@@ -105,8 +105,9 @@ namespace fair_mark_desktop
                 Directory.CreateDirectory(pathExtract);
                 ZipFile.ExtractToDirectory(pathtofile, pathExtract);
             }
+
             var dictinary = new DirectoryInfo(pathExtract);
-            FileInfo[] files = dictinary.GetFiles("*.pdf");
+            var files = dictinary.GetFilesDeepInfo("*.pdf");
 
             AddFilesPrint(files.Select(x => x.FullName).ToList());
            
