@@ -217,14 +217,15 @@ namespace fair_mark_desktop
         {
             if (!defaultPrinterSwitch.Checked)
             {
-                if (new PrintDialog().ShowDialog() == DialogResult.OK)
-                    SendToPrinter();
+                var pp = new PrintDialog();
+                if (pp.ShowDialog() == DialogResult.OK)
+                    SendToPrinter(pp);
             }
             else
                 SendToPrinter();
         }
 
-        private void SendToPrinter()
+        private void SendToPrinter(PrintDialog pd = null)
         {
             var list = materialCheckedListBox1.Items.Where(x => x.Checked)
                 .Select(x => ((CustomMaterailCheckBox)x).Value).ToList();
@@ -235,6 +236,10 @@ namespace fair_mark_desktop
                 {
                     var document = PdfDocument.Load(file);
                     var printDocument = document.CreatePrintDocument();
+                    if (pd != null)
+                    {
+                        printDocument.PrinterSettings = pd.PrinterSettings;
+                    }
                     printDocument.Print();
                 }
             }
