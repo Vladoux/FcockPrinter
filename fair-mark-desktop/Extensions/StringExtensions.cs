@@ -66,7 +66,7 @@ namespace fair_mark_desktop.Extensions
         {
             return File.Exists(source) ? File.ReadAllText(source) : null;
         }
-        public static void Clean (this string source)
+        public static void Clean(this string source)
         {
             if (Directory.Exists(source))
             {
@@ -74,9 +74,23 @@ namespace fair_mark_desktop.Extensions
                 foreach (var item in list)
                 {
                     var days = (DateTime.Today - Directory.GetCreationTime(item)).TotalDays;
-                    if (days > 30) Directory.Delete(item,true);
+                    if (days > 30) Directory.Delete(item, true);
                 };
             }
+        }
+
+        public static string ToStrikeText(this string source, bool isfile = false)
+        {
+            var sym = "̶";
+            var newText = " ̶";
+            var newnew = isfile ? Path.GetFileNameWithoutExtension(source) : source;
+
+            foreach (var s in newnew)
+            {
+                newText += s + sym;
+            }
+            return isfile ? newText : newText+$".pdf";
+
         }
     }
 }

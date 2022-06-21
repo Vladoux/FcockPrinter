@@ -40,7 +40,7 @@ namespace fair_mark_desktop
             Text = $"FairCode Print {ApplicationSettings.GetNormalizeProductVersion()}";
 
             WorkSchedulerService.IntervalInHours(1, async () => await CheckVersion());
-            WorkSchedulerService.IntervalInHours(1/60.0, () => (Path.Combine(path, $"downloads")).Clean());
+            WorkSchedulerService.IntervalInHours(1 / 60.0, () => (Path.Combine(path, $"downloads")).Clean());
             hiddenFilePath.FirstCreateFile("False");
             isHiden = File.ReadAllText(hiddenFilePath) == "True";
             Watcher();
@@ -62,6 +62,7 @@ namespace fair_mark_desktop
             materialSkinManager.ColorScheme = new ColorScheme(Color.FromArgb(10, 68, 99),
                 Color.FromArgb(10, 68, 99), Color.FromArgb(10, 68, 99),
                 Color.FromArgb(10, 68, 99), TextShade.WHITE);
+
         }
 
 
@@ -110,7 +111,7 @@ namespace fair_mark_desktop
             var files = dictinary.GetFilesDeepInfo("*.pdf");
 
             AddFilesPrint(files.Select(x => x.FullName).ToList());
-           
+
             if (isHiden)
                 SendToPrinter();
         }
@@ -229,7 +230,7 @@ namespace fair_mark_desktop
         {
             var list = materialCheckedListBox1.Items.Where(x => x.Checked)
                 .Select(x => ((CustomMaterailCheckBox)x).Value).ToList();
-            RemoveFromList(x => x.Checked);
+            StrikeText(x => x.Checked);
             foreach (var file in list)
             {
                 if (File.Exists(file))
@@ -241,6 +242,7 @@ namespace fair_mark_desktop
                         printDocument.PrinterSettings = pd.PrinterSettings;
                     }
                     printDocument.Print();
+
                 }
             }
         }
@@ -354,6 +356,17 @@ namespace fair_mark_desktop
             UpdateButtonsState();
             if (!materialCheckedListBox1.Items.Any())
                 selectAllSwitch.Checked = false;
+        }
+
+        public void StrikeText(Func<MaterialCheckbox, bool> pred)
+        {
+            var items = materialCheckedListBox1.Items.Where(pred);
+            foreach(var item in items)
+            {
+               item.Text = item.Text.ToStrikeText();
+               item.Checked = false;
+            }
+
         }
 
         private void materialButton4_Click(object sender, EventArgs e)
