@@ -15,6 +15,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
+using System.Net.Security;
 using System.Security.Permissions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -73,7 +74,8 @@ namespace fair_mark_desktop
                 var url = paramUrl.Substring(8);
                 WebClient client = new WebClient();
                 client.DownloadProgressChanged += wc_DownloadProgressChanged;
-
+                ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((o, cert, chain, policy) => true);
+ 
                 client.DownloadFileTaskAsync(new Uri($"{url}"),
                    Path.Combine(path, $"test.{ext}")).ContinueWith(x => ExctractZip(Path.Combine(path, $"test.{ext}")));
                 return true;
