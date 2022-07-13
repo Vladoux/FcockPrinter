@@ -96,8 +96,8 @@ namespace fair_mark_desktop
             // 
             this.tableLayoutPanel1.SetColumnSpan(this.materialProgressBar1, 3);
             this.materialProgressBar1.Depth = 0;
-            this.materialProgressBar1.ForeColor = System.Drawing.Color.Lime;
             resources.ApplyResources(this.materialProgressBar1, "materialProgressBar1");
+            this.materialProgressBar1.ForeColor = System.Drawing.Color.Lime;
             this.materialProgressBar1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialProgressBar1.Name = "materialProgressBar1";
             this.materialProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;

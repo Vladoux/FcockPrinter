@@ -124,18 +124,6 @@
     <value>130, 17</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="openMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>135, 22</value>
-  </data>
-  <data name="openMenuItem.Text" xml:space="preserve">
-    <value>Развернуть</value>
-  </data>
-  <data name="closeMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>135, 22</value>
-  </data>
-  <data name="closeMenuItem.Text" xml:space="preserve">
-    <value>Закрыть</value>
-  </data>
   <data name="contextMenuStrip1.Size" type="System.Drawing.Size, System.Drawing">
     <value>136, 48</value>
   </data>
@@ -1284,6 +1272,18 @@
   <data name="notifyIcon1.Visible" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="openMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>135, 22</value>
+  </data>
+  <data name="openMenuItem.Text" xml:space="preserve">
+    <value>Развернуть</value>
+  </data>
+  <data name="closeMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>135, 22</value>
+  </data>
+  <data name="closeMenuItem.Text" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="materialButton1.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
@@ -1340,7 +1340,7 @@
     <value>200, 36</value>
   </data>
   <data name="materialButton3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>316, 41</value>
+    <value>400, 51</value>
   </data>
   <data name="materialButton3.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -1360,11 +1360,14 @@
   <data name="&gt;&gt;materialButton3.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="materialProgressBar1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
   <data name="materialProgressBar1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 267</value>
+    <value>3, 269</value>
   </data>
   <data name="materialProgressBar1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>522, 5</value>
+    <value>688, 5</value>
   </data>
   <data name="materialProgressBar1.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -1394,7 +1397,7 @@
     <value>MiddleRight</value>
   </data>
   <data name="materialLabel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>332, 0</value>
+    <value>498, 0</value>
   </data>
   <data name="materialLabel1.Size" type="System.Drawing.Size, System.Drawing">
     <value>193, 34</value>
@@ -1433,7 +1436,7 @@
     <value>3, 37</value>
   </data>
   <data name="materialCheckedListBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>522, 224</value>
+    <value>688, 226</value>
   </data>
   <data name="materialCheckedListBox1.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -1457,13 +1460,13 @@
     <value>Left</value>
   </data>
   <data name="defaultPrinterSwitch.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 323</value>
+    <value>0, 325</value>
   </data>
   <data name="defaultPrinterSwitch.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="defaultPrinterSwitch.Size" type="System.Drawing.Size, System.Drawing">
-    <value>238, 47</value>
+    <value>238, 45</value>
   </data>
   <data name="defaultPrinterSwitch.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -1490,13 +1493,13 @@
     <value>Left</value>
   </data>
   <data name="autoPrintSwitch.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 276</value>
+    <value>0, 279</value>
   </data>
   <data name="autoPrintSwitch.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="autoPrintSwitch.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 47</value>
+    <value>240, 46</value>
   </data>
   <data name="autoPrintSwitch.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -1519,11 +1522,14 @@
   <data name="materialButton2.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
+  <data name="materialButton2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
   <data name="materialButton2.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
   <data name="materialButton2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>431, 282</value>
+    <value>559, 285</value>
   </data>
   <data name="materialButton2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 6, 4, 6</value>
@@ -1532,7 +1538,7 @@
     <value>74, 0</value>
   </data>
   <data name="materialButton2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>91, 35</value>
+    <value>131, 34</value>
   </data>
   <data name="materialButton2.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
@@ -1555,8 +1561,11 @@
   <data name="materialButton4.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
+  <data name="materialButton4.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
   <data name="materialButton4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>328, 282</value>
+    <value>412, 285</value>
   </data>
   <data name="materialButton4.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 6, 4, 6</value>
@@ -1565,7 +1574,7 @@
     <value>74, 0</value>
   </data>
   <data name="materialButton4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 35</value>
+    <value>139, 34</value>
   </data>
   <data name="materialButton4.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -1595,7 +1604,7 @@
     <value>6</value>
   </data>
   <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>528, 423</value>
+    <value>694, 433</value>
   </data>
   <data name="tableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -1613,13 +1622,13 @@
     <value>1</value>
   </data>
   <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="selectAllSwitch" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="materialButton1" Row="5" RowSpan="1" Column="1" ColumnSpan="2" /&gt;&lt;Control Name="materialButton3" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="materialProgressBar1" Row="2" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="materialLabel1" Row="0" RowSpan="1" Column="1" ColumnSpan="2" /&gt;&lt;Control Name="materialCheckedListBox1" Row="1" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="defaultPrinterSwitch" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="autoPrintSwitch" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="materialButton2" Row="3" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="materialButton4" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,324,Absolute,103,Absolute,101" /&gt;&lt;Rows Styles="Absolute,34,Absolute,230,Absolute,12,Absolute,47,Absolute,47,Absolute,8" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="selectAllSwitch" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="materialButton1" Row="5" RowSpan="1" Column="1" ColumnSpan="2" /&gt;&lt;Control Name="materialButton3" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="materialProgressBar1" Row="2" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="materialLabel1" Row="0" RowSpan="1" Column="1" ColumnSpan="2" /&gt;&lt;Control Name="materialCheckedListBox1" Row="1" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="defaultPrinterSwitch" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="autoPrintSwitch" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="materialButton2" Row="3" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="materialButton4" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,408,Absolute,147,Absolute,46" /&gt;&lt;Rows Styles="Absolute,34,Absolute,232,Absolute,13,Absolute,46,Absolute,45,Absolute,8" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="materialButton1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <data name="materialButton1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>328, 376</value>
+    <value>412, 376</value>
   </data>
   <data name="materialButton1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 6, 4, 6</value>
@@ -1628,7 +1637,7 @@
     <value>10, 36</value>
   </data>
   <data name="materialButton1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>196, 41</value>
+    <value>278, 51</value>
   </data>
   <data name="materialButton1.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -1682,7 +1691,7 @@
     <value>Center</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>534, 490</value>
+    <value>700, 500</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -2817,10 +2826,10 @@
 </value>
   </data>
   <data name="$this.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>534, 490</value>
+    <value>700, 500</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>534, 490</value>
+    <value>700, 500</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterScreen</value>

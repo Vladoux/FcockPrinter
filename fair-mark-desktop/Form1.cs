@@ -34,6 +34,7 @@ namespace fair_mark_desktop
         private readonly static string urlFilePath = $"{path}\\url.txt";
         private readonly static string hiddenFilePath = $"{path}\\IsHiden.txt";
         private readonly StorageFilePaths storateFiles = new StorageFilePaths();
+        private bool isOldVersion = false;
         public Form1(string[] args)
         {
             InitializeComponent();
@@ -75,7 +76,7 @@ namespace fair_mark_desktop
                 WebClient client = new WebClient();
                 client.DownloadProgressChanged += wc_DownloadProgressChanged;
                 ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((o, cert, chain, policy) => true);
- 
+
                 client.DownloadFileTaskAsync(new Uri($"{url}"),
                    Path.Combine(path, $"test.{ext}")).ContinueWith(x => ExctractZip(Path.Combine(path, $"test.{ext}")));
                 return true;
@@ -154,8 +155,9 @@ namespace fair_mark_desktop
 
         private void UpdateButtonsState()
         {
-            materialButton3.Enabled = materialCheckedListBox1.Items.Any(z => z.Checked);
-            materialButton2.Enabled = materialCheckedListBox1.Items.Any(z => z.Checked);
+            var canButtonBeEnable = !isOldVersion && materialCheckedListBox1.Items.Any(z => z.Checked);
+            materialButton3.Enabled = canButtonBeEnable;
+            materialButton2.Enabled = canButtonBeEnable;
         }
 
         private void OpenFileHandler(object sender, EventArgs e)
@@ -255,8 +257,10 @@ namespace fair_mark_desktop
             ToTray();
         }
 
-        private void OnUrlFileChanged(object sender, FileSystemEventArgs e)
+        private async void OnUrlFileChanged(object sender, FileSystemEventArgs e)
         {
+            await CheckVersion();
+
             if (e.FullPath.Replace("\\\\", "\\") != urlFilePath) return;
 
             if (!autoPrintSwitch.Checked)
@@ -333,12 +337,28 @@ namespace fair_mark_desktop
                     materialLabel1.Text = $"Доступна новая версия {result.Value}";
                     materialLabel1.Visible = true;
                 }));
+
+                autoPrintSwitch.Invoke((MethodInvoker)(() => { autoPrintSwitch.Checked = false; }));
+
+                var buttons = new List<MaterialButton> 
+                { 
+                    materialButton1,
+                    materialButton2, 
+                    materialButton3, 
+                    materialButton4 
+                };
+
+                buttons.ForEach(button => button.Invoke((MethodInvoker)(() => button.Enabled = false)));
+                isOldVersion = true;
             }
             else
+            {
+                isOldVersion = false;
                 materialLabel1.Invoke((MethodInvoker)(() =>
                 {
                     materialLabel1.Visible = false;
                 }));
+            }
         }
 
         private void materialButton2_Click(object sender, EventArgs e)
@@ -363,10 +383,10 @@ namespace fair_mark_desktop
         public void StrikeText(Func<MaterialCheckbox, bool> pred)
         {
             var items = materialCheckedListBox1.Items.Where(pred);
-            foreach(var item in items)
+            foreach (var item in items)
             {
-               item.Text = item.Text.ToStrikeText();
-               item.Checked = false;
+                item.Text = item.Text.ToStrikeText();
+                item.Checked = false;
             }
 
         }
