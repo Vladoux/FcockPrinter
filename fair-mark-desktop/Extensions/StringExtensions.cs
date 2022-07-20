@@ -10,8 +10,14 @@ namespace fair_mark_desktop.Extensions
     {
         public static void WriteToFile(this string source, string text)
         {
-            source.CreateNotExistDirectories();
-            File.WriteAllText(source, text);
+            try
+            {
+                source.CreateNotExistDirectories();
+                File.WriteAllText(source, text);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         /// <summary>

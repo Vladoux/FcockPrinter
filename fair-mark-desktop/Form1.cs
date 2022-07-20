@@ -357,7 +357,6 @@ namespace fair_mark_desktop
             if (string.IsNullOrEmpty(url)) return;
 
             connectedUserId = urlParams.Length > 1 ? urlParams[1] : null;
-            userIdFilePath.WriteToFile(connectedUserId);
 
             if (downloadUrl != url)
             {
@@ -366,10 +365,11 @@ namespace fair_mark_desktop
                 materialProgressBar1.Execute(() => materialProgressBar1.Value = 0);
             }
 
-            if (!string.IsNullOrEmpty(downloadUrl) && !fileDownloaded)
+            if (!string.IsNullOrEmpty(downloadUrl))
             {
                 fileDownloaded = true;
                 ext = downloadUrl.Substring(downloadUrl.Length - 3, 3);
+                userIdFilePath.WriteToFile(connectedUserId);
                 await Download(downloadUrl);
             }
         }
