@@ -18,6 +18,8 @@ namespace fair_mark_desktop.Service
 #else
         private const string _baseUrl = "http://94.198.50.203:81/api";
 #endif   
+
+        public static string DownloadAppUrl = $"{_baseUrl}/application-info/win-app-setup";
         public async static Task<ResponseResult> CheckNewVersion()
         {
             try
@@ -26,6 +28,38 @@ namespace fair_mark_desktop.Service
                 {
                     client.DefaultRequestHeaders.Accept.Clear();
                     var response = await client.GetAsync($"{_baseUrl}/application-info/win-app-version");
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var readTask = response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                        var rawResponse = readTask.GetAwaiter().GetResult();
+                        var obj = JsonConvert.DeserializeObject<ResponseResult>(rawResponse);
+                        return obj;
+                    }
+                }
+                return new ResponseResult()
+                {
+                    IsSuccess = false
+                };
+            }
+            catch (Exception e)
+            {
+                return new ResponseResult
+                {
+                    IsSuccess = false,
+                    Message = e.Message
+                };
+            }
+
+        }
+
+        public async static Task<ResponseResult> DownloadNewVersion()
+        {
+            try
+            {
+                using (var client = new HttpClient { BaseAddress = new Uri(_baseUrl) })
+                {
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    var response = await client.GetAsync($"{_baseUrl}/application-info/desktop-apps");
                     if (response.IsSuccessStatusCode)
                     {
                         var readTask = response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -89,7 +123,6 @@ namespace fair_mark_desktop.Service
             {
                 return ResponseResult.Error(e.Message);
             }
-            
         }
     }
 
@@ -107,5 +140,12 @@ namespace fair_mark_desktop.Service
                 Message = message
             };
         }
+    }
+
+    public class ResponseResult<T>
+    {
+        public T Value { get; set; }
+        public string Message { get; set; }
+        public bool IsSuccess { get; set; }
     }
 }

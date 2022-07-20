@@ -61,7 +61,7 @@ namespace fair_mark_desktop
             notifyIcon1.MouseDoubleClick += new MouseEventHandler(notifyIcon1_MouseDoubleClick);
             Resize += new EventHandler(Form1_Resize);
 
-            Path.Combine(Path.GetTempPath(), $"FCode\\url.txt").WriteToFile(args.FirstOrDefault());
+            Path.Combine(urlFilePath).WriteToFile(args.FirstOrDefault());
             connectedUserId = storateFiles.LastConnectionUserId;
             AddFilesPrint(storateFiles.GetPaths());
         }
@@ -88,13 +88,8 @@ namespace fair_mark_desktop
             {
                 // обрезка в строке 'fcode://'
                 var url = paramUrl.Substring(8);
-                WebClient client = new WebClient();
-                client.DownloadProgressChanged += wc_DownloadProgressChanged;
-                ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((o, cert, chain, policy) => true);
-
                 // скачивание файла
-                _ = client.DownloadFileTaskAsync(new Uri($"{url}"),
-                   Path.Combine(path, $"test.{ext}")).ContinueWith(x => ExctractZip(Path.Combine(path, $"test.{ext}")));
+                _ = Download(url, Path.Combine(path, $"test.{ext}")).ContinueWith(x => ExctractZip(Path.Combine(path, $"test.{ext}")));
                 return true;
             }
             catch (Exception e)
@@ -102,6 +97,16 @@ namespace fair_mark_desktop
                 await NotifyUser(e.Message, NotificationType.FileReceivedError, true);
                 return false;
             }
+        }
+
+        public Task Download(string downloadUrl, string fileName)
+        {
+            WebClient client = new WebClient();
+            client.DownloadProgressChanged += wc_DownloadProgressChanged;
+            ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((o, cert, chain, policy) => true);
+
+            // скачивание файла
+            return client.DownloadFileTaskAsync(new Uri(downloadUrl), fileName);
         }
 
 
@@ -338,11 +343,11 @@ namespace fair_mark_desktop
         /// <param name="e"></param>
         private async void OnUrlFileChanged(object sender, FileSystemEventArgs e)
         {
-            // проверка версии приложения
             await CheckVersion();
 
             if (e.FullPath.Replace("\\\\", "\\") != urlFilePath) return;
-
+            
+            materialProgressBar1.Execute(() => materialProgressBar1.Value = 0);
             if (!autoPrintSwitch.Checked)
             {
                 Invoke((MethodInvoker)OpenForm);
@@ -362,7 +367,6 @@ namespace fair_mark_desktop
             {
                 downloadUrl = url;
                 fileDownloaded = false;
-                materialProgressBar1.Execute(() => materialProgressBar1.Value = 0);
             }
 
             if (!string.IsNullOrEmpty(downloadUrl))
@@ -371,6 +375,7 @@ namespace fair_mark_desktop
                 ext = downloadUrl.Substring(downloadUrl.Length - 3, 3);
                 userIdFilePath.WriteToFile(connectedUserId);
                 await Download(downloadUrl);
+                urlFilePath.WriteToFile("");
             }
         }
 
@@ -404,12 +409,15 @@ namespace fair_mark_desktop
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public void Watcher()
         {
+            var folder = $"{Path.GetTempPath()}\\FCode";
+            if (!Directory.Exists(folder))
+                Directory.CreateDirectory(folder);
+
             // вочер просматривает папку FCode (в Temp) на любые изменения файлов
             watcher = new FileSystemWatcher()
             {
                 Path = $"{Path.GetTempPath()}\\FCode",
-                NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.LastAccess
-                    | NotifyFilters.FileName | NotifyFilters.DirectoryName | NotifyFilters.Size,
+                NotifyFilter = NotifyFilters.LastWrite,
                 Filter = "*.*",
                 EnableRaisingEvents = true
             };
@@ -446,6 +454,11 @@ namespace fair_mark_desktop
                 // все кнопки ставим в состояние - неактивно
                 buttons.ForEach(button => button.Invoke((MethodInvoker)(() => button.Enabled = false)));
                 isOldVersion = true;
+
+                versionPanel.Invoke((MethodInvoker)(() =>
+                {
+                    versionPanel.Visible = true;
+                }));
             }
             else
             {
@@ -454,6 +467,31 @@ namespace fair_mark_desktop
                 {
                     materialLabel1.Visible = false;
                 }));
+
+                versionPanel.Invoke((MethodInvoker)(() =>
+                {
+                    versionPanel.Visible = false;
+                }));
+            }
+        }
+
+        private void DownloadNewVersion()
+        {
+            materialProgressBar1.Value = 0;
+            using (var saveFileDialog = new SaveFileDialog()
+            {
+                Filter = "Application file(*.exe)|*.exe|All files(*.*)|*.*",
+                FileName = "FCodePrinterInstaller.exe"
+            })
+            {
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filename = saveFileDialog.FileName;
+                    string folder = Path.GetDirectoryName(filename);
+
+                    var link = FMarkApiService.DownloadAppUrl;
+                    _ = Download(link, filename).ContinueWith(x => Task.Run(() => { Process.Start("explorer.exe", folder); }));
+                }
             }
         }
 
@@ -532,6 +570,11 @@ namespace fair_mark_desktop
         {
             if (autoPrintSwitch.Checked)
                 defaultPrinterSwitch.Checked = true;
+        }
+
+        private void downloadButton_Click(object sender, EventArgs e)
+        {
+            DownloadNewVersion();
         }
     }
 }

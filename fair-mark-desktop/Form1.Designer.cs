@@ -39,7 +39,6 @@ namespace fair_mark_desktop
             this.materialProgressBar1 = new MaterialSkin.Controls.MaterialProgressBar();
             this.materialButton3 = new MaterialSkin.Controls.MaterialButton();
             this.defaultPrinterSwitch = new MaterialSkin.Controls.MaterialSwitch();
-            this.materialCheckedListBox1 = new MaterialSkin.Controls.MaterialCheckedListBox();
             this.materialCheckbox1 = new MaterialSkin.Controls.MaterialCheckbox();
             this.autoPrintSwitch = new MaterialSkin.Controls.MaterialSwitch();
             this.selectAllSwitch = new MaterialSkin.Controls.MaterialSwitch();
@@ -47,8 +46,18 @@ namespace fair_mark_desktop
             this.materialButton2 = new MaterialSkin.Controls.MaterialButton();
             this.materialButton4 = new MaterialSkin.Controls.MaterialButton();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.materialCheckedListBox1 = new MaterialSkin.Controls.MaterialCheckedListBox();
+            this.versionPanel = new System.Windows.Forms.Panel();
+            this.downloadButton = new MaterialSkin.Controls.MaterialButton();
+            this.mainTextlabel = new MaterialSkin.Controls.MaterialLabel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.contextMenuStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.materialCheckedListBox1.SuspendLayout();
+            this.versionPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // notifyIcon1
@@ -127,17 +136,6 @@ namespace fair_mark_desktop
             this.defaultPrinterSwitch.Ripple = true;
             this.defaultPrinterSwitch.UseVisualStyleBackColor = true;
             this.defaultPrinterSwitch.CheckedChanged += new System.EventHandler(this.defaultPrinterSwitch_CheckedChanged);
-            // 
-            // materialCheckedListBox1
-            // 
-            resources.ApplyResources(this.materialCheckedListBox1, "materialCheckedListBox1");
-            this.materialCheckedListBox1.BackColor = System.Drawing.SystemColors.Control;
-            this.tableLayoutPanel1.SetColumnSpan(this.materialCheckedListBox1, 3);
-            this.materialCheckedListBox1.Depth = 0;
-            this.materialCheckedListBox1.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialCheckedListBox1.Name = "materialCheckedListBox1";
-            this.materialCheckedListBox1.Striped = false;
-            this.materialCheckedListBox1.StripeDarkColor = System.Drawing.Color.Empty;
             // 
             // materialCheckbox1
             // 
@@ -220,12 +218,67 @@ namespace fair_mark_desktop
             this.tableLayoutPanel1.Controls.Add(this.materialButton3, 0, 5);
             this.tableLayoutPanel1.Controls.Add(this.materialProgressBar1, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.materialLabel1, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.materialCheckedListBox1, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.defaultPrinterSwitch, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.autoPrintSwitch, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.materialButton2, 2, 3);
             this.tableLayoutPanel1.Controls.Add(this.materialButton4, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 1);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            // 
+            // panel1
+            // 
+            this.tableLayoutPanel1.SetColumnSpan(this.panel1, 3);
+            this.panel1.Controls.Add(this.materialCheckedListBox1);
+            resources.ApplyResources(this.panel1, "panel1");
+            this.panel1.Name = "panel1";
+            // 
+            // materialCheckedListBox1
+            // 
+            resources.ApplyResources(this.materialCheckedListBox1, "materialCheckedListBox1");
+            this.materialCheckedListBox1.BackColor = System.Drawing.SystemColors.Control;
+            this.materialCheckedListBox1.Controls.Add(this.versionPanel);
+            this.materialCheckedListBox1.Depth = 0;
+            this.materialCheckedListBox1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialCheckedListBox1.Name = "materialCheckedListBox1";
+            this.materialCheckedListBox1.Striped = false;
+            this.materialCheckedListBox1.StripeDarkColor = System.Drawing.Color.Empty;
+            // 
+            // versionPanel
+            // 
+            this.versionPanel.Controls.Add(this.downloadButton);
+            this.versionPanel.Controls.Add(this.mainTextlabel);
+            this.versionPanel.Controls.Add(this.pictureBox1);
+            resources.ApplyResources(this.versionPanel, "versionPanel");
+            this.versionPanel.Name = "versionPanel";
+            // 
+            // downloadButton
+            // 
+            resources.ApplyResources(this.downloadButton, "downloadButton");
+            this.downloadButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.downloadButton.Depth = 0;
+            this.downloadButton.HighEmphasis = true;
+            this.downloadButton.Icon = null;
+            this.downloadButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.downloadButton.Name = "downloadButton";
+            this.downloadButton.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.downloadButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.downloadButton.UseAccentColor = false;
+            this.downloadButton.UseVisualStyleBackColor = true;
+            this.downloadButton.Click += new System.EventHandler(this.downloadButton_Click);
+            // 
+            // mainTextlabel
+            // 
+            resources.ApplyResources(this.mainTextlabel, "mainTextlabel");
+            this.mainTextlabel.Depth = 0;
+            this.mainTextlabel.MouseState = MaterialSkin.MouseState.HOVER;
+            this.mainTextlabel.Name = "mainTextlabel";
+            this.mainTextlabel.UseAccent = true;
+            // 
+            // pictureBox1
+            // 
+            resources.ApplyResources(this.pictureBox1, "pictureBox1");
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.TabStop = false;
             // 
             // Form1
             // 
@@ -239,6 +292,11 @@ namespace fair_mark_desktop
             this.contextMenuStrip1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.materialCheckedListBox1.ResumeLayout(false);
+            this.versionPanel.ResumeLayout(false);
+            this.versionPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -252,7 +310,6 @@ namespace fair_mark_desktop
         private MaterialSkin.Controls.MaterialProgressBar materialProgressBar1;
         private MaterialSkin.Controls.MaterialButton materialButton3;
         private MaterialSkin.Controls.MaterialSwitch defaultPrinterSwitch;
-        private MaterialSkin.Controls.MaterialCheckedListBox materialCheckedListBox1;
         private MaterialSkin.Controls.MaterialCheckbox materialCheckbox1;
         private MaterialSkin.Controls.MaterialSwitch autoPrintSwitch;
         private MaterialSkin.Controls.MaterialSwitch selectAllSwitch;
@@ -260,6 +317,12 @@ namespace fair_mark_desktop
         private MaterialSkin.Controls.MaterialButton materialButton2;
         private MaterialSkin.Controls.MaterialButton materialButton4;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Panel panel1;
+        private MaterialSkin.Controls.MaterialCheckedListBox materialCheckedListBox1;
+        private System.Windows.Forms.Panel versionPanel;
+        private MaterialSkin.Controls.MaterialButton downloadButton;
+        private MaterialSkin.Controls.MaterialLabel mainTextlabel;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 

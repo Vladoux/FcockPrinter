@@ -153,6 +153,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\favicon.ico" />
+    <Content Include="Images\new-icon-png-15.jpg" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
