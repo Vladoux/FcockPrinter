@@ -48,10 +48,6 @@ namespace fair_mark_desktop
             InitMatetialColor();
             Text = $"FairCode Print {AppVersion}";
 
-            // ставим метод на повтор - проверка версии
-            WorkSchedulerService.IntervalInHours(1, async () => await CheckVersion());
-            // ставим метод на повтор - очистка 
-            WorkSchedulerService.IntervalInHours(1 / 60.0, () => (Path.Combine(path, $"downloads")).Clean());
             hiddenFilePath.FirstCreateFile("False");
             isHiden = File.ReadAllText(hiddenFilePath) == "True";
             Watcher();
@@ -64,6 +60,11 @@ namespace fair_mark_desktop
             Path.Combine(urlFilePath).WriteToFile(args.FirstOrDefault());
             connectedUserId = storateFiles.LastConnectionUserId;
             AddFilesPrint(storateFiles.GetPaths());
+
+            // ставим метод на повтор - проверка версии
+            WorkSchedulerService.IntervalInHours(1, async () => await CheckVersion());
+            // ставим метод на повтор - очистка 
+            WorkSchedulerService.IntervalInHours(1 / 60.0, () => (Path.Combine(path, $"downloads")).Clean());
         }
 
         private void InitMatetialColor()
@@ -459,6 +460,15 @@ namespace fair_mark_desktop
                 {
                     versionPanel.Visible = true;
                 }));
+
+                var a = versionPanel;
+
+                panel1.Invoke((MethodInvoker)(() =>
+                {
+                    panel1.Controls.Remove(materialCheckedListBox1);
+                    panel1.Controls.Add(a);
+                }));
+                
             }
             else
             {

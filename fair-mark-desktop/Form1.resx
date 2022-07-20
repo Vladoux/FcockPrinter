@@ -2105,11 +2105,14 @@
   <data name="&gt;&gt;pictureBox1.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="versionPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
   <data name="versionPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
+    <value>0, 0</value>
   </data>
   <data name="versionPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>685, 220</value>
+    <value>688, 226</value>
   </data>
   <data name="versionPanel.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
