@@ -107,6 +107,8 @@
     <Compile Include="CustomModels\CustomMaterailCheckBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="CustomModels\Enums\NotificationType.cs" />
+    <Compile Include="CustomModels\PostNotificationModel.cs" />
     <Compile Include="CustomModels\StorageFilePaths.cs" />
     <Compile Include="Extensions\ApplicationExtensions.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />

@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using fair_mark_desktop.CustomModels;
+using fair_mark_desktop.CustomModels.Enums;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +11,14 @@ using System.Windows.Forms;
 
 namespace fair_mark_desktop.Service
 {
-    public class FMarkApiService
+    public static class FMarkApiService
     {
 #if DEBUG
         private const string _baseUrl = "http://10.81.80.6:6162";
 #else
         private const string _baseUrl = "http://94.198.50.203:81/api";
 #endif   
-        public async Task<ResponseResult> CheckNewVersion()
+        public async static Task<ResponseResult> CheckNewVersion()
         {
             try
             {
@@ -47,6 +49,48 @@ namespace fair_mark_desktop.Service
             }
 
         }
+
+        /// <summary>
+        /// Оповещение пользователя
+        /// </summary>
+        /// <param name="userId">Id пользователя системы FairCode</param>
+        /// <param name="message">Сообщение для отправки</param>
+        /// <param name="type">Тип оповещения</param>
+        /// <returns></returns>
+        public async static Task<ResponseResult> NotifyUserFMark(string userId, string message, NotificationType type)
+        {
+            try
+            {
+                // формирование тела для отправки в формате json
+                var json = JsonConvert.SerializeObject(new PostNotificationModel
+                {
+                    Message = message,
+                    UserId = userId,
+                    Type = type
+                });
+                // создание тела для самого запроса
+                var sendObject = new StringContent(json, Encoding.UTF8, "application/json");
+
+                using (var client = new HttpClient { BaseAddress = new Uri(_baseUrl) })
+                {
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    var response = await client.PostAsync($"{_baseUrl}/notifications/notify-user", sendObject);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var readTask = response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                        var rawResponse = readTask.GetAwaiter().GetResult();
+                        var obj = JsonConvert.DeserializeObject<ResponseResult>(rawResponse);
+                        return obj;
+                    }
+                }
+                return ResponseResult.Error();
+            }
+            catch(Exception e)
+            {
+                return ResponseResult.Error(e.Message);
+            }
+            
+        }
     }
 
     public class ResponseResult
@@ -54,5 +98,14 @@ namespace fair_mark_desktop.Service
         public string Value { get; set; }
         public string Message { get; set; }
         public bool IsSuccess { get; set; }
+
+        public static ResponseResult Error(string message = null)
+        {
+            return new ResponseResult
+            {
+                IsSuccess = false,
+                Message = message
+            };
+        }
     }
 }

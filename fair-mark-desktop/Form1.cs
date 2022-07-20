@@ -1,4 +1,5 @@
 ﻿using fair_mark_desktop.CustomModels;
+using fair_mark_desktop.CustomModels.Enums;
 using fair_mark_desktop.Extensions;
 using fair_mark_desktop.Service;
 using MaterialSkin;
@@ -11,6 +12,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Printing;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -32,16 +34,23 @@ namespace fair_mark_desktop
         private bool isHiden;
         private readonly static string path = $"{Path.GetTempPath()}FCode";
         private readonly static string urlFilePath = $"{path}\\url.txt";
+        private readonly static string userIdFilePath = $"{path}\\userId.txt";
         private readonly static string hiddenFilePath = $"{path}\\IsHiden.txt";
         private readonly StorageFilePaths storateFiles = new StorageFilePaths();
         private bool isOldVersion = false;
+
+        private static string connectedUserId = string.Empty;
+        private string AppVersion => ApplicationSettings.GetNormalizeProductVersion();
+
         public Form1(string[] args)
         {
             InitializeComponent();
             InitMatetialColor();
-            Text = $"FairCode Print {ApplicationSettings.GetNormalizeProductVersion()}";
+            Text = $"FairCode Print {AppVersion}";
 
+            // ставим метод на повтор - проверка версии
             WorkSchedulerService.IntervalInHours(1, async () => await CheckVersion());
+            // ставим метод на повтор - очистка 
             WorkSchedulerService.IntervalInHours(1 / 60.0, () => (Path.Combine(path, $"downloads")).Clean());
             hiddenFilePath.FirstCreateFile("False");
             isHiden = File.ReadAllText(hiddenFilePath) == "True";
@@ -53,6 +62,7 @@ namespace fair_mark_desktop
             Resize += new EventHandler(Form1_Resize);
 
             Path.Combine(Path.GetTempPath(), $"FCode\\url.txt").WriteToFile(args.FirstOrDefault());
+            connectedUserId = storateFiles.LastConnectionUserId;
             AddFilesPrint(storateFiles.GetPaths());
         }
 
@@ -67,23 +77,29 @@ namespace fair_mark_desktop
 
         }
 
-
-        public bool Download(string paramUrl)
+        /// <summary>
+        /// Метод для скачивания файла по ссылке
+        /// </summary>
+        /// <param name="paramUrl"></param>
+        /// <returns>Успешно или нет</returns>
+        public async Task<bool> Download(string paramUrl)
         {
             try
             {
+                // обрезка в строке 'fcode://'
                 var url = paramUrl.Substring(8);
                 WebClient client = new WebClient();
                 client.DownloadProgressChanged += wc_DownloadProgressChanged;
                 ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((o, cert, chain, policy) => true);
 
-                client.DownloadFileTaskAsync(new Uri($"{url}"),
+                // скачивание файла
+                _ = client.DownloadFileTaskAsync(new Uri($"{url}"),
                    Path.Combine(path, $"test.{ext}")).ContinueWith(x => ExctractZip(Path.Combine(path, $"test.{ext}")));
                 return true;
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                await NotifyUser(e.Message, NotificationType.FileReceivedError, true);
                 return false;
             }
         }
@@ -95,7 +111,11 @@ namespace fair_mark_desktop
         }
 
 
-        public void ExctractZip(string pathtofile)
+        /// <summary>
+        /// Метод для разархивации файла
+        /// </summary>
+        /// <param name="pathtofile">Путь к скачанному файлу</param>
+        public async Task ExctractZip(string pathtofile)
         {
             var pathtoextract = Path.Combine(path, $"downloads");
             if (!Directory.Exists(pathtoextract))
@@ -112,6 +132,9 @@ namespace fair_mark_desktop
 
             var dictinary = new DirectoryInfo(pathExtract);
             var files = dictinary.GetFilesDeepInfo("*.pdf");
+
+            if (files.Any())
+                await NotifyUser("Файл успешно получен приложением", NotificationType.FileReceivedSuccess);
 
             AddFilesPrint(files.Select(x => x.FullName).ToList());
 
@@ -230,25 +253,76 @@ namespace fair_mark_desktop
                 SendToPrinter();
         }
 
-        private void SendToPrinter(PrintDialog pd = null)
+        /// <summary>
+        /// Отправка файлов на печать
+        /// </summary>
+        /// <param name="pd">Диалоговое окно печати (windows)</param>
+        private async void SendToPrinter(PrintDialog pd = null)
         {
-            var list = materialCheckedListBox1.Items.Where(x => x.Checked)
-                .Select(x => ((CustomMaterailCheckBox)x).Value).ToList();
+            var selectedList = SelectedFiles.ToList();
+            // зачеркиваем выбранные файлы по предикату
             StrikeText(x => x.Checked);
-            foreach (var file in list)
+            // инициализвация количества напечатанных файлов
+            var countPrintedFiles = 0;
+            // проход по путям файлов и отправка на принтер
+            foreach (var file in selectedList)
             {
-                if (File.Exists(file))
-                {
-                    var document = PdfDocument.Load(file);
-                    var printDocument = document.CreatePrintDocument();
-                    if (pd != null)
-                    {
-                        printDocument.PrinterSettings = pd.PrinterSettings;
-                    }
-                    printDocument.Print();
+                // проверка на существование файла
+                if (!File.Exists(file))
+                    continue;
 
+                try
+                {
+                    // загрузка документа
+                    var document = PdfDocument.Load(file);
+                    // создание объекта для печати
+                    var printDocument = document.CreatePrintDocument();
+                    // если был послан объект диалога
+                    if (pd != null)
+                        // то применяем новые настройки для печати
+                        printDocument.PrinterSettings = pd.PrinterSettings;
+                    // инициализируем событие на конец печати последней страницы файла
+                    printDocument.EndPrint += (s, e) =>
+                    {
+                        if (!e.Cancel)
+                            countPrintedFiles++;
+                    };
+                    // запускаем печать
+                    printDocument.Print();
+                }
+                // проверка на ошибки принтера
+                catch (InvalidPrinterException exc)
+                {
+                    await NotifyUser(exc.Message, NotificationType.PrinterError, true);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
                 }
             }
+
+            if (countPrintedFiles > 0)
+                await NotifyUser($"Файлы ({countPrintedFiles}) успешно напечатаны", NotificationType.PrinterCompleted);
+        }
+
+        /// <summary>
+        /// Список путей выбранных из списка файлов
+        /// </summary>
+        public List<string> SelectedFiles => materialCheckedListBox1.Items.Where(x => x.Checked)
+                .Select(x => ((CustomMaterailCheckBox)x).Value).ToList();
+
+        /// <summary>
+        /// Метод для оповещения пользователя
+        /// </summary>
+        /// <param name="sendMessage">Сообщение для отправки на бэк</param>
+        /// <param name="notificationType">Тип оповещения</param>
+        /// <param name="withDialogError">Флаг - показывать ошибку в приложении</param>
+        /// <returns></returns>
+        public async Task NotifyUser(string sendMessage, NotificationType notificationType, bool withDialogError = false)
+        {
+            await FMarkApiService.NotifyUserFMark(connectedUserId, sendMessage, notificationType);
+            if (withDialogError)
+                MessageBox.Show(sendMessage);
         }
 
         private void materialButton1_Click(object sender, EventArgs e)
@@ -257,8 +331,14 @@ namespace fair_mark_desktop
             ToTray();
         }
 
+        /// <summary>
+        /// Метод события на изменение файлов
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void OnUrlFileChanged(object sender, FileSystemEventArgs e)
         {
+            // проверка версии приложения
             await CheckVersion();
 
             if (e.FullPath.Replace("\\\\", "\\") != urlFilePath) return;
@@ -269,8 +349,16 @@ namespace fair_mark_desktop
             }
 
             Thread.Sleep(1000);
-            var url = File.ReadAllText(urlFilePath);
+
+            var urlWithUser = File.ReadAllText(urlFilePath);
+            var urlParams = urlWithUser.Split(new string[] { "?userId=" }, StringSplitOptions.None);
+            var url = urlParams[0];
+
             if (string.IsNullOrEmpty(url)) return;
+
+            connectedUserId = urlParams.Length > 1 ? urlParams[1] : null;
+            userIdFilePath.WriteToFile(connectedUserId);
+
             if (downloadUrl != url)
             {
                 downloadUrl = url;
@@ -282,7 +370,7 @@ namespace fair_mark_desktop
             {
                 fileDownloaded = true;
                 ext = downloadUrl.Substring(downloadUrl.Length - 3, 3);
-                Download(downloadUrl);
+                await Download(downloadUrl);
             }
         }
 
@@ -310,9 +398,13 @@ namespace fair_mark_desktop
         }
 
         static FileSystemWatcher watcher = null;
+        /// <summary>
+        /// Метод инициализации системного вочера
+        /// </summary>
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public void Watcher()
         {
+            // вочер просматривает папку FCode (в Temp) на любые изменения файлов
             watcher = new FileSystemWatcher()
             {
                 Path = $"{Path.GetTempPath()}\\FCode",
@@ -327,27 +419,31 @@ namespace fair_mark_desktop
 
         public async Task CheckVersion()
         {
-            var version = ApplicationSettings.GetNormalizeProductVersion();
-            var fmarkService = new FMarkApiService();
-            var result = await fmarkService.CheckNewVersion();
-            if (result.IsSuccess && !Equals(version, result.Value))
+            var result = await FMarkApiService.CheckNewVersion();
+
+            // если получили ответ и есть разлиция в версих
+            if (result.IsSuccess && !Equals(AppVersion, result.Value))
             {
+                // показывает текст о доступности новой версии
                 materialLabel1.Invoke((MethodInvoker)(() =>
                 {
                     materialLabel1.Text = $"Доступна новая версия {result.Value}";
                     materialLabel1.Visible = true;
                 }));
 
+                // помечаем невозможность автопечати
                 autoPrintSwitch.Invoke((MethodInvoker)(() => { autoPrintSwitch.Checked = false; }));
 
-                var buttons = new List<MaterialButton> 
-                { 
+                // инициализируем список кнопок
+                var buttons = new List<MaterialButton>
+                {
                     materialButton1,
-                    materialButton2, 
-                    materialButton3, 
-                    materialButton4 
+                    materialButton2,
+                    materialButton3,
+                    materialButton4
                 };
 
+                // все кнопки ставим в состояние - неактивно
                 buttons.ForEach(button => button.Invoke((MethodInvoker)(() => button.Enabled = false)));
                 isOldVersion = true;
             }
@@ -388,10 +484,9 @@ namespace fair_mark_desktop
                 item.Text = item.Text.ToStrikeText();
                 item.Checked = false;
             }
-
         }
 
-        private void materialButton4_Click(object sender, EventArgs e)
+        private async void materialButton4_Click(object sender, EventArgs e)
         {
             var fileContent = string.Empty;
             var filePath = string.Empty;
@@ -417,7 +512,7 @@ namespace fair_mark_desktop
                     ext = filePath.Substring(filePath.Length - 3, 3);
                     if (ext == "zip")
                     {
-                        ExctractZip(filePath);
+                        await ExctractZip(filePath);
                     }
                     else if (ext == "pdf")
                     {
