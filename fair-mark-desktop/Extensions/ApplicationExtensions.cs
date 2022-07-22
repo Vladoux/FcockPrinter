@@ -9,7 +9,7 @@ namespace fair_mark_desktop.Extensions
         public static string GetNormalizeProductVersion()
         {
             var assembly = Assembly.GetExecutingAssembly();
-            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
             return $"{fvi.FileMajorPart}.{fvi.FileMinorPart}.{fvi.FileBuildPart}";
         }
     }

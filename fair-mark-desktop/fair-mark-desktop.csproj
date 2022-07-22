@@ -93,6 +93,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Management" />
+    <Reference Include="System.Printing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -113,6 +114,7 @@
     <Compile Include="Extensions\ApplicationExtensions.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />
     <Compile Include="Extensions\DirectoryInfoExtensions.cs" />
+    <Compile Include="Extensions\PrintJobExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

@@ -14,7 +14,7 @@ namespace fair_mark_desktop.Service
     public static class FMarkApiService
     {
 #if DEBUG
-        private const string _baseUrl = "http://10.81.80.6:6162";
+        private const string _baseUrl = "http://10.81.80.6:6161/api";
 #else
         private const string _baseUrl = "http://94.198.50.203:81/api";
 #endif   

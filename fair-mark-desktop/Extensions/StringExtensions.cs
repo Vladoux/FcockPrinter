@@ -17,6 +17,7 @@ namespace fair_mark_desktop.Extensions
             }
             catch (Exception)
             {
+                // ignored
             }
         }
 
@@ -52,6 +53,7 @@ namespace fair_mark_desktop.Extensions
                     result = true;
                 }
             }
+
             return result;
         }
 
@@ -72,6 +74,7 @@ namespace fair_mark_desktop.Extensions
         {
             return File.Exists(source) ? File.ReadAllText(source) : null;
         }
+
         public static void Clean(this string source)
         {
             if (Directory.Exists(source))
@@ -81,7 +84,9 @@ namespace fair_mark_desktop.Extensions
                 {
                     var days = (DateTime.Today - Directory.GetCreationTime(item)).TotalDays;
                     if (days > 30) Directory.Delete(item, true);
-                };
+                }
+
+                ;
             }
         }
 
@@ -95,8 +100,8 @@ namespace fair_mark_desktop.Extensions
             {
                 newText += s + sym;
             }
-            return isfile ? newText : newText+$".pdf";
 
+            return isfile ? newText : newText + $".pdf";
         }
     }
 }

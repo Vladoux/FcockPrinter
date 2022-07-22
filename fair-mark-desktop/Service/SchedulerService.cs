@@ -18,18 +18,10 @@ namespace fair_mark_desktop.Service
         }
     }
 
-    public class WorkSchedulerService
+    public static class WorkSchedulerService
     {
-        public static SchedulerService SchedulerService
-        {
-            get
-            {
-                if (_schedulerService == null)
-                    _schedulerService = new SchedulerService();
-                return _schedulerService;
-            }
-        }
-        private static SchedulerService _schedulerService = null;
+        private static SchedulerService SchedulerService => _schedulerService ?? (_schedulerService = new SchedulerService());
+        private static SchedulerService _schedulerService;
 
         public static void IntervalInHours(double interval, Action task)
         {
