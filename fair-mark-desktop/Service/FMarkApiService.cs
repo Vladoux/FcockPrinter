@@ -16,11 +16,12 @@ namespace fair_mark_desktop.Service
 #if DEBUG
         private const string _baseUrl = "http://10.81.80.6:6161/api";
 #else
-        private const string _baseUrl = "http://94.198.50.203:81/api";
+        private const string _baseUrl = "https://fc.caspel.com/api";
 #endif   
 
-        public static string DownloadAppUrl = $"{_baseUrl}/application-info/win-app-setup";
-        public async static Task<ResponseResult> CheckNewVersion()
+        public static readonly string DownloadAppUrl = $"{_baseUrl}/application-info/win-app-setup";
+        
+        public static async Task<ResponseResult> CheckNewVersion()
         {
             try
             {
@@ -52,38 +53,6 @@ namespace fair_mark_desktop.Service
 
         }
 
-        public async static Task<ResponseResult> DownloadNewVersion()
-        {
-            try
-            {
-                using (var client = new HttpClient { BaseAddress = new Uri(_baseUrl) })
-                {
-                    client.DefaultRequestHeaders.Accept.Clear();
-                    var response = await client.GetAsync($"{_baseUrl}/application-info/desktop-apps");
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var readTask = response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                        var rawResponse = readTask.GetAwaiter().GetResult();
-                        var obj = JsonConvert.DeserializeObject<ResponseResult>(rawResponse);
-                        return obj;
-                    }
-                }
-                return new ResponseResult()
-                {
-                    IsSuccess = false
-                };
-            }
-            catch (Exception e)
-            {
-                return new ResponseResult
-                {
-                    IsSuccess = false,
-                    Message = e.Message
-                };
-            }
-
-        }
-
         /// <summary>
         /// Оповещение пользователя
         /// </summary>
@@ -91,7 +60,7 @@ namespace fair_mark_desktop.Service
         /// <param name="message">Сообщение для отправки</param>
         /// <param name="type">Тип оповещения</param>
         /// <returns></returns>
-        public async static Task<ResponseResult> NotifyUserFMark(string userId, string message, NotificationType type)
+        public static async Task<ResponseResult> NotifyUserFMark(string userId, string message, NotificationType type)
         {
             try
             {
