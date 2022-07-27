@@ -1,14 +1,8 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
-using System.Runtime.InteropServices;
-using System.Diagnostics;
 using System.IO;
-using System.Security.Permissions;
 using fair_mark_desktop.Extensions;
 
 namespace fair_mark_desktop
@@ -22,7 +16,7 @@ namespace fair_mark_desktop
         [STAThread]
         static void Main(string[] args)
         {
-            using (Mutex mutex = new Mutex(true, "fair-mark-desktop", out var createdNew))
+            using (var mutex = new Mutex(true, "fair-mark-desktop", out var createdNew))
             {
                 if (createdNew)
                 {

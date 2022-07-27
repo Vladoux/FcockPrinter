@@ -1,10 +1,7 @@
 ﻿using fair_mark_desktop.Extensions;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace fair_mark_desktop.CustomModels
 {

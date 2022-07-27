@@ -1,17 +1,26 @@
-﻿using System;
-using System.Printing;
+﻿using System.Printing;
 using fair_mark_desktop.CustomModels.Enums;
 
 namespace fair_mark_desktop.Extensions
 {
     public static class PrintJobExtensions
     {
+        /// <summary>
+        /// Получение флага "В работе" печатаемого документа
+        /// </summary>
+        /// <param name="systemJobInfo">Петачуемый документ</param>
+        /// <returns></returns>
         public static bool InWork(this PrintSystemJobInfo systemJobInfo)
         {
             return systemJobInfo != null &&
                    (systemJobInfo.IsPrinting || systemJobInfo.IsDeleting || systemJobInfo.IsSpooling);
         }
 
+        /// <summary>
+        /// Получение статуса печатаемого документа
+        /// </summary>
+        /// <param name="systemJobInfo">Петачуемый документ</param>
+        /// <returns></returns>
         public static (string, bool, NotificationType) GetStatusWithNotify(this PrintSystemJobInfo systemJobInfo)
         {
             systemJobInfo.Refresh();

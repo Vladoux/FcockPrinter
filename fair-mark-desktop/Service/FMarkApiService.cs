@@ -2,33 +2,30 @@
 using fair_mark_desktop.CustomModels.Enums;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace fair_mark_desktop.Service
 {
     public static class FMarkApiService
     {
 #if DEBUG
-        private const string _baseUrl = "http://10.81.80.6:6161/api";
+        private const string BaseUrl = "http://10.81.80.6:6161/api";
 #else
-        private const string _baseUrl = "https://fc.caspel.com/api";
+        private const string BaseUrl = "https://fc.caspel.com/api";
 #endif   
 
-        public static readonly string DownloadAppUrl = $"{_baseUrl}/application-info/win-app-setup";
+        public static readonly string DownloadAppUrl = $"{BaseUrl}/application-info/win-app-setup";
         
         public static async Task<ResponseResult> CheckNewVersion()
         {
             try
             {
-                using (var client = new HttpClient { BaseAddress = new Uri(_baseUrl) })
+                using (var client = new HttpClient { BaseAddress = new Uri(BaseUrl) })
                 {
                     client.DefaultRequestHeaders.Accept.Clear();
-                    var response = await client.GetAsync($"{_baseUrl}/application-info/win-app-version");
+                    var response = await client.GetAsync($"{BaseUrl}/application-info/win-app-version");
                     if (response.IsSuccessStatusCode)
                     {
                         var readTask = response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -74,10 +71,10 @@ namespace fair_mark_desktop.Service
                 // создание тела для самого запроса
                 var sendObject = new StringContent(json, Encoding.UTF8, "application/json");
 
-                using (var client = new HttpClient { BaseAddress = new Uri(_baseUrl) })
+                using (var client = new HttpClient { BaseAddress = new Uri(BaseUrl) })
                 {
                     client.DefaultRequestHeaders.Accept.Clear();
-                    var response = await client.PostAsync($"{_baseUrl}/notifications/notify-user", sendObject);
+                    var response = await client.PostAsync($"{BaseUrl}/notifications/notify-user", sendObject);
                     if (response.IsSuccessStatusCode)
                     {
                         var readTask = response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -95,6 +92,7 @@ namespace fair_mark_desktop.Service
         }
     }
 
+    [Serializable]
     public class ResponseResult
     {
         public string Value { get; set; }
@@ -109,12 +107,5 @@ namespace fair_mark_desktop.Service
                 Message = message
             };
         }
-    }
-
-    public class ResponseResult<T>
-    {
-        public T Value { get; set; }
-        public string Message { get; set; }
-        public bool IsSuccess { get; set; }
     }
 }

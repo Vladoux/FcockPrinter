@@ -32,10 +32,10 @@ namespace fair_mark_desktop
         private string _ext;
 
         private bool _isHiden;
-        private static readonly string Path = $"{System.IO.Path.GetTempPath()}FCode";
-        private static readonly string UrlFilePath = $"{Path}\\url.txt";
-        private static readonly string UserIdFilePath = $"{Path}\\userId.txt";
-        private static readonly string HiddenFilePath = $"{Path}\\IsHiden.txt";
+        private static readonly string TempPath = $"{Path.GetTempPath()}FCode";
+        private static readonly string UrlFilePath = $"{TempPath}\\url.txt";
+        private static readonly string UserIdFilePath = $"{TempPath}\\userId.txt";
+        private static readonly string HiddenFilePath = $"{TempPath}\\IsHiden.txt";
         private readonly StorageFilePaths _storateFiles = new StorageFilePaths();
         private bool _isOldVersion;
 
@@ -57,14 +57,14 @@ namespace fair_mark_desktop
             notifyIcon1.MouseDoubleClick += notifyIcon1_MouseDoubleClick;
             Resize += Form1_Resize;
 
-            System.IO.Path.Combine(UrlFilePath).WriteToFile(args.FirstOrDefault());
+            Path.Combine(UrlFilePath).WriteToFile(args.FirstOrDefault());
             _connectedUserId = _storateFiles.LastConnectionUserId;
             AddFilesPrint(_storateFiles.GetPaths());
 
             // ставим метод на повтор - проверка версии
             WorkSchedulerService.IntervalInHours(1, async () => await CheckVersion());
             // ставим метод на повтор - очистка 
-            WorkSchedulerService.IntervalInHours(1 / 60.0, () => (System.IO.Path.Combine(Path, $"downloads")).Clean());
+            WorkSchedulerService.IntervalInHours(1 / 60.0, () => Path.Combine(TempPath, "downloads").Clean());
         }
 
         private void InitMatetialColor()
@@ -89,8 +89,8 @@ namespace fair_mark_desktop
                 // обрезка в строке 'fcode://'
                 var url = paramUrl.Substring(8);
                 // скачивание файла
-                _ = Download(url, System.IO.Path.Combine(Path, $"test.{_ext}"))
-                    .ContinueWith(x => ExctractZip(System.IO.Path.Combine(Path, $"test.{_ext}")));
+                _ = Download(url, Path.Combine(TempPath, $"test.{_ext}"))
+                    .ContinueWith(x => ExctractZip(Path.Combine(TempPath, $"test.{_ext}")));
             }
             catch (Exception e)
             {
@@ -98,6 +98,12 @@ namespace fair_mark_desktop
             }
         }
 
+        /// <summary>
+        /// Метод скачивания файла по ссылке
+        /// </summary>
+        /// <param name="downloadUrl">Ссылка для скачивания</param>
+        /// <param name="fileName">Название полученного файла</param>
+        /// <returns></returns>
         private Task Download(string downloadUrl, string fileName)
         {
             var client = new WebClient();
@@ -125,13 +131,13 @@ namespace fair_mark_desktop
         /// <param name="pathtofile">Путь к скачанному файлу</param>
         private async Task ExctractZip(string pathtofile)
         {
-            var pathtoextract = System.IO.Path.Combine(Path, "downloads");
+            var pathtoextract = Path.Combine(TempPath, "downloads");
             if (!Directory.Exists(pathtoextract))
             {
                 Directory.CreateDirectory(pathtoextract);
             }
 
-            var pathExtract = System.IO.Path.Combine(pathtoextract, $"{DateTime.Now:dd-MM-yyyy-HH-mm-ss}");
+            var pathExtract = Path.Combine(pathtoextract, $"{DateTime.Now:dd-MM-yyyy-HH-mm-ss}");
             if (_ext == "zip")
             {
                 Directory.CreateDirectory(pathExtract);
@@ -200,15 +206,13 @@ namespace fair_mark_desktop
         private static void ShowFolderHandler(object sender, EventArgs e)
         {
             var itemPath = ((CustomMaterailCheckBox)((MaterialToolStripMenuItem)sender).GetItemBoxFromContext()).Value;
-            Process.Start("explorer.exe", System.IO.Path.GetDirectoryName(itemPath));
+            Process.Start("explorer.exe", Path.GetDirectoryName(itemPath));
         }
 
         private void Form1_Resize(object sender, EventArgs e)
         {
             if (WindowState == FormWindowState.Minimized)
-            {
                 ToTray();
-            }
         }
 
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -312,17 +316,22 @@ namespace fair_mark_desktop
         private static async Task CheckPrinterDocumentStatus(string documentName, string printerName)
         {
             var printServer = new PrintServer();
+            // получение всех принтеров
             var myPrintQueues = printServer.GetPrintQueues(new[]
                 { EnumeratedPrintQueueTypes.Local, EnumeratedPrintQueueTypes.Connections });
-
+            // поиск принтера по имени
             var printQueue = myPrintQueues.FirstOrDefault(x => x.Name.ToLower() == printerName);
+            // проверка на наличие принтера
             if (printQueue != null)
             {
+                // получение списка печатаемых документов
                 printQueue.Refresh();
                 var jobs = printQueue.GetPrintJobInfoCollection();
+                // поиск печатаемого документа по имени
                 var findedJob = jobs.FirstOrDefault(x =>
                     string.Equals(x.Name, documentName, StringComparison.CurrentCultureIgnoreCase));
-
+                
+                // проверка на статус "В работе"
                 while (findedJob.InWork())
                     findedJob?.Refresh();
 
@@ -330,6 +339,8 @@ namespace fair_mark_desktop
                 if (toNotify)
                     await NotifyUser(message, notificationType);
 
+                // проверка принтера на "Офлайн"
+                // так как статус документа не показывает статус "Офлайн"
                 if (findedJob?.HostingPrintQueue.IsOffline ?? false)
                     await NotifyUser("Принтер недоступен", NotificationType.PrinterError);
             }
@@ -429,14 +440,14 @@ namespace fair_mark_desktop
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         private void Watcher()
         {
-            var folder = $"{System.IO.Path.GetTempPath()}\\FCode";
+            var folder = $"{Path.GetTempPath()}\\FCode";
             if (!Directory.Exists(folder))
                 Directory.CreateDirectory(folder);
 
             // вочер просматривает папку FCode (в Temp) на любые изменения файлов
             _watcher = new FileSystemWatcher
             {
-                Path = $"{System.IO.Path.GetTempPath()}\\FCode",
+                Path = $"{Path.GetTempPath()}\\FCode",
                 NotifyFilter = NotifyFilters.LastWrite,
                 Filter = "*.*",
                 EnableRaisingEvents = true
@@ -477,12 +488,12 @@ namespace fair_mark_desktop
 
                 versionPanel.Invoke((MethodInvoker)(() => { versionPanel.Visible = true; }));
 
-                var a = versionPanel;
+                var panel = versionPanel;
 
                 panel1.Invoke((MethodInvoker)(() =>
                 {
                     panel1.Controls.Remove(materialCheckedListBox1);
-                    panel1.Controls.Add(a);
+                    panel1.Controls.Add(panel);
                 }));
             }
             else
@@ -506,7 +517,7 @@ namespace fair_mark_desktop
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     var filename = saveFileDialog.FileName;
-                    var folder = System.IO.Path.GetDirectoryName(filename);
+                    var folder = Path.GetDirectoryName(filename);
 
                     var link = FMarkApiService.DownloadAppUrl;
                     _ = Download(link, filename).ContinueWith(x => Task.Run(() =>

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace fair_mark_desktop.CustomModels.Enums
+﻿namespace fair_mark_desktop.CustomModels.Enums
 {
     /// <summary>
     /// Перечисление типов оповещений
