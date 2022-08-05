@@ -376,8 +376,6 @@ namespace fair_mark_desktop
         /// <param name="e"></param>
         private async void OnUrlFileChanged(object sender, FileSystemEventArgs e)
         {
-            await CheckVersion();
-
             if (e.FullPath.Replace("\\\\", "\\") != UrlFilePath) return;
 
             materialProgressBar1.Execute(() => materialProgressBar1.Value = 0);
@@ -386,7 +384,7 @@ namespace fair_mark_desktop
                 Invoke((MethodInvoker)OpenForm);
             }
 
-            Thread.Sleep(1000);
+            Thread.Sleep(400);
 
             var urlWithUser = File.ReadAllText(UrlFilePath);
             var urlParams = urlWithUser.Split(new[] { "?userId=" }, StringSplitOptions.None);
